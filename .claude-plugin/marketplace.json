@@ -1,0 +1,19 @@
+{
+  "name": "hex-skills",
+  "owner": {
+    "name": "Rachel Herrera",
+    "url": "https://github.com/hex-inc"
+  },
+  "metadata": {
+    "description": "Agent skills for working with Hex's AI agents and analytics platform.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "hex-context-best-practices",
+      "source": "./skills/hex-context-best-practices",
+      "description": "Advise on and draft Hex context assets (endorsements, descriptions, workspace context/guides, semantic models), plan a phased Threads rollout, and diagnose wrong agent answers.",
+      "version": "1.0.0"
+    }
+  ]
+}
