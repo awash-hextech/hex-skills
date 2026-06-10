@@ -1,0 +1,12 @@
+{
+  "name": "hex-context-best-practices",
+  "version": "1.0.0",
+  "description": "Build and roll out a context strategy for Hex's AI agents (Threads, Notebook Agent, Modeling Agent). Drafts context assets, plans phased rollouts, and diagnoses wrong answers.",
+  "author": {
+    "name": "Rachel Herrera",
+    "url": "https://github.com/rherrera89"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "context-engineering", "threads", "analytics", "ai-agents"]
+}
