@@ -27,10 +27,16 @@ Use it to ask the Hex agent the same gap-finding questions as Tier 1 from inside
 cannot pull Suggestions or observability data** — those stay in Context Studio (Tier 1) or the CLI
 (Tier 3). Don't imply otherwise.
 
-## Tier 3 — Via the Hex CLI (advanced / power users) — the clever loop
+## Tier 3 — Via the terminal (CLI + API) — the clever loop
 
-This is the payoff for CLI and coding-agent users. The CLI can **pull Hex's Suggestions straight into
-the terminal**, so a coding agent (Claude Code, Codex) can read them and act:
+This is the payoff for CLI and coding-agent users.
+
+**`hex` CLI** can **pull Hex's Suggestions straight into the terminal**, so a coding agent (Claude
+Code, Codex) can read them and act:
+
+**REST API** (curl / Python from the same terminal) can bulk-apply endorsements — there is no
+`hex endorse` subcommand, but agents can call `PATCH /v1/data-connections/{id}/schema` after you
+approve an endorse list. Full map: `references/automation.md`.
 
 ```bash
 hex suggestion list --json          # Hex's own context-improvement recommendations
