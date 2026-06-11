@@ -24,15 +24,21 @@ tell the person to confirm against the linked doc.
 - Suggestions (AI-recommended context fixes; CLI-manageable) — https://learn.hex.tech/docs/agent-management/suggestions
 - Threads (product) — https://learn.hex.tech/docs/explore-data/threads
 
-## Integrations
+## Integrations & automation
+- Public API overview — https://learn.hex.tech/docs/api-integrations/api/overview
+- Public API reference — https://learn.hex.tech/docs/api-integrations/api/reference
 - External Apps (MCP) — https://learn.hex.tech/docs/api-integrations/external-apps
 - MCP Server — https://learn.hex.tech/docs/api-integrations/mcp-server
 - Hex Agent in Slack — https://learn.hex.tech/docs/api-integrations/slack
 - CLI — https://learn.hex.tech/docs/api-integrations/cli
 
+Skill map for terminal/API automation (endorse via API, guide publish, suggestion loop):
+`references/automation.md`
+
 ## Quick map: which doc for which task
 - Writing workspace context or a guide → workspace-context-best-practices
-- Endorsing / excluding tables → setup-for-ai-agents + endorsements
+- Endorsing / excluding tables → setup-for-ai-agents + endorsements; bulk endorse via API → automation.md
+- Automating context from terminal (CLI, curl, coding agent) → automation.md + api/overview
 - Adding descriptions → setup-for-ai-agents
 - Building/syncing a semantic model → models + semantic-models intro
 - Connecting code repos → reference-repositories

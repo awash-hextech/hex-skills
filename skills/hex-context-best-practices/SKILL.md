@@ -128,5 +128,8 @@ ocean.
 - `references/advanced-context.md` — reference repositories (code) and External Apps / MCP. Read when
   the person asks about repos or MCP, or already has code connected to their AI tooling.
 - `references/hex-docs.md` — canonical Hex doc links. Fetch the relevant page before giving UI steps.
+- `references/automation.md` — CLI + REST API map for context work from the terminal. Read when
+  someone wants to automate endorsements, publish guides, run the suggestion loop, or have a coding
+  agent (Claude Code, Codex, Cursor) apply context changes via `hex` or `curl`/scripts.
 - `references/ask-hex.md` — tiered ways (in-product / MCP / CLI) to get Hex's own signal on what
   context to improve, including the `hex suggestion list` CLI loop.

@@ -19,6 +19,7 @@ hex-context-best-practices/
 │   ├── context-assets-deep-dive.md   # workspace context/guides + semantic YAML examples
 │   ├── advanced-context.md           # reference repositories + External Apps / MCP
 │   ├── ask-hex.md                    # in-product / MCP / CLI ways to get Hex's improvement signal
+│   ├── automation.md                 # CLI + API map; endorse via curl/script from coding agents
 │   └── hex-docs.md                   # canonical Hex doc links (fetch before UI steps)
 └── hex-guides/
     └── guide-writing-guide.md        # install into Hex — teaches the agent to help write guides

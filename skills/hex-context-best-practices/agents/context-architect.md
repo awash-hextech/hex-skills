@@ -49,7 +49,9 @@ asset to pick. A routing table in workspace context is a sign that descriptions 
 descriptions instead.
 
 Deliver: an endorse list + an exclude list grouped by domain, plus description drafts for each
-endorsed asset (see Section 2 for description quality bar).
+endorsed asset (see Section 2 for description quality bar). If they want terminal automation, offer
+to apply the endorse list via API (`references/automation.md`); exclude-from-AI still goes through
+the Data browser UI.
 
 ---
 
@@ -139,6 +141,8 @@ tier the person can reach (full ladder in `references/ask-hex.md`):
   Codex/etc.). It can't pull Suggestions or observability — only ask the agent and search projects.
 - **CLI / coding agents:** `hex suggestion list` pulls Hex's recommendations into the terminal; the
   agent reads them, drafts fixes here, applies them, then marks them done — a closed loop.
+- **API from terminal:** no `hex endorse` command, but coding agents can apply endorse lists via
+  `PATCH /v1/data-connections/{id}/schema` (curl or Python). See `references/automation.md`.
 
 ## Diagnose a wrong answer → fix
 
@@ -171,9 +175,11 @@ the right path:
 
 | Their situation | Path |
 | --- | --- |
+| Has endorse/exclude lists to apply at scale | **API from terminal:** offer to run bulk `UpdateDataConnectionSchema` calls (curl or a short script). Need `HEX_API_TOKEN`, connection ID (`hex connection list --json`), and workspace status name. See `references/automation.md`. Exclude-from-AI is UI-only today. |
+| Using Claude Code / Codex / Cursor | Same API path — agent drafts the list, user approves, agent executes curl/Python. For guides: `hex guide preview` → `publish`. |
 | Has the Hex CLI installed | Run `hex guide publish` from the repo containing their guide files and a `hex_context.config.json`. Offer to help set that up. |
 | Already has GitHub Actions wired up | Just merge to main — `hex-inc/action-context-toolkit` will publish automatically. |
-| No CLI or CI set up yet | Paste into Hex manually: **Data → Context Studio → Guides → New guide**. Suggest setting up the CLI or GitHub Action as a next step if they'll be iterating frequently. |
+| No CLI or CI set up yet | Paste into Hex manually: **Data → Context Studio → Guides → New guide** (guides) or **Data browser** (endorse/exclude). Suggest CLI, API, or GitHub Action for frequent iteration. |
 
 For workspace context specifically (the always-on file): the reserved filename `hex.md` maps to
 workspace context when published via CLI. If they're pasting manually, it goes in
