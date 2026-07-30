@@ -177,5 +177,5 @@ repo so it's version-controlled and preview-gated before you rely on it.
 
 - Check **Context Studio → Suggestions** periodically — Hex auto-generates improvement recommendations
   from conversation patterns and feedback, each with a concrete fix to accept or reject.
-- Power users: `hex suggestion list` pulls those recommendations into the terminal so a coding agent
-  can draft the fix as a PR and close the loop.
+- When a suggestion or a wrong answer points to a gap, edit the relevant file in your repo and open a
+  PR — the Action syncs it on merge. Context compounds; each fix is a small PR.

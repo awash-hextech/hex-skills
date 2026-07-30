@@ -5,9 +5,18 @@ Git repo** and sync into Hex automatically via a GitHub Action. The repo is the 
 synced resources are **read-only in Hex**, so no one can drift the live copy out from under version
 control.
 
-This is the path this skill defaults to. You author and edit files in the repo, open a PR to preview,
-merge to publish. Fetch the live pages in `references/hex-docs.md` before giving UI steps — Hex's UI
-changes. Authoritative doc: **Context Sync** (linked there).
+This is the only publish path this skill uses. The loop is:
+
+```
+author/edit files in the repo  →  open a PR  →  user merges  →  the GitHub Action syncs to Hex
+```
+
+The skill **never publishes via the Hex CLI or by pasting into the UI** — it produces file changes and
+a PR; the user's merge and the Action do the deploy. Fetch the live pages in `references/hex-docs.md`
+before giving UI steps — Hex's UI changes. Authoritative doc: **Context Sync** (linked there).
+
+If they don't have a context repo yet, **Step 1 is to create one** (below). If they already have a
+repo wired to the Action, skip setup and go straight to the workflow loop at the bottom.
 
 ---
 
@@ -23,14 +32,23 @@ The work splits cleanly across two agents. Keep them in their lanes:
 
 **The handoff that makes this work:** when content needs to reference real tables or columns, don't
 guess — have the **Hex agent draft it** (it can introspect the warehouse and run queries), then bring
-that draft back into the repo, structure it, and sync it. See `hex-guides/guide-writing-guide.md` for
-the prompt pattern. The coding agent owns the plumbing; the Hex agent owns the data grounding.
+that draft back into the repo, structure it, and sync it. Ask it interactively in a Thread, or drive
+it from the CLI: `hex thread create "<prompt>"` then `hex thread continue <id> "<prompt>"`. See
+`hex-guides/guide-writing-guide.md` for the prompt pattern. The coding agent owns the plumbing; the
+Hex agent owns the data grounding. (The CLI here only *drafts and pulls signal* — publishing is still
+the PR + Action.)
 
 ---
 
-## Repo layout
+## Step 1 — Create the context repo
 
-A conventional layout (adapt to an existing repo — see "Editing an existing repo" below):
+If the team has no repo for context yet, create one (a new GitHub repo, or a folder in an existing
+one — see "Editing an existing repo"). The one rule to state clearly:
+
+> **`hex.md` at the repo root is the workspace context** (always-on, sent with every prompt).
+> **Every other `.md` file is a guide** (retrieved only when relevant).
+
+A conventional layout:
 
 ```
 your-repo/
@@ -43,18 +61,17 @@ your-repo/
 │   └── sales/
 │       ├── model.yml
 │       └── view.yml
-├── hex_context.config.json      # tells the Action which files to sync
+├── hex_context.config.json      # tells the Action which files to sync (Step 2)
 └── .github/workflows/
-    └── hex-context.yml          # the sync Action
+    └── hex-context.yml          # the sync Action (Step 3)
 ```
 
-`hex.md` at the repo root is the **reserved path for workspace context**. Any other Markdown file is a
-guide. You don't have to name it `hex.md` on disk — you can map any file to that slot with
-`hexFilePath` (below).
+You don't have to literally name the file `hex.md` on disk — you can map any file to the workspace-
+context slot with `hexFilePath: "hex.md"` (Step 2). But the reserved name is `hex.md`.
 
 ---
 
-## The config file — `hex_context.config.json`
+## Step 2 — Add the config file (`hex_context.config.json`)
 
 Lives at the repo root. Tells the Action which files to upload and where they land in Hex.
 
@@ -93,7 +110,7 @@ the next publish. The repo is the source of truth — deleting a file deletes th
 
 ---
 
-## The GitHub Action
+## Step 3 — Add the GitHub Action
 
 Add `.github/workflows/hex-context.yml`:
 
@@ -141,7 +158,7 @@ jobs:
 
 ---
 
-## The API token (one-time setup)
+## Step 4 — Add the API token (one-time)
 
 A **Workspace Admin** creates the token:
 
@@ -155,40 +172,19 @@ Direct the user to create and paste the token themselves — don't ask them to h
 
 ---
 
-## Test locally before wiring CI (optional)
+## Migrating context you already authored in the Hex UI
 
-If they have the Hex CLI, the same sync runs from a terminal — useful for a first dry run. It's a
-**two-step preview → publish** flow:
+If a guide or the workspace context (`hex.md`) was **authored in the Hex UI**, the repo sync won't
+silently overwrite it — the Action reports something like *"Cannot overwrite a Hex authored guide with
+an API authored guide."* This is the moment a team moves from authoring-in-Hex to context-as-code.
 
-```bash
-hex auth login                          # interactive; or --token-from-env for non-interactive
-hex guide preview                       # reads hex_context.config.json at the git root; returns a
-                                        #   Preview ID + a preview link to test the new context
-hex guide publish <preview_id>          # deploy that preview to the workspace (add --draft for draft only)
-```
+To take ownership: **delete the UI-authored copy in Context Studio first** (Data → Context Studio →
+Guides, or Settings → AI & agents for workspace context), then let the repo sync create the repo-owned
+version on the next merge. After that, the file in the repo is the source of truth and the asset is
+read-only in Hex.
 
-Run `hex guide preview` from the repo root and it auto-discovers `hex_context.config.json`; pass
-`--config-path <path>` for a non-default location, or list files explicitly
-(`hex guide preview hex.md guides/*.md`) to preview a subset. Pruning is on by default when no files
-are listed. This is the same engine the Action uses — most teams let CI do it and only reach for the
-CLI to debug or to run the one-time takeover below.
-
-## Taking over context you authored in the Hex UI
-
-If a guide or the workspace context (`hex.md`) was **authored in the Hex UI**, the sync won't silently
-overwrite it — you'll get an error like *"Cannot overwrite a Hex authored guide with an API authored
-guide."* This is the exact moment a team moves from authoring-in-Hex to context-as-code. Take
-ownership once, then the repo is the source of truth:
-
-```bash
-hex guide preview --force               # take over UI-authored guides that the config now manages
-hex guide publish <preview_id>
-```
-
-After the takeover, those assets are repo-owned and read-only in Hex. (Alternatively, delete the
-UI-authored copy in Context Studio first, then let the normal sync create it from the repo.) If the
-GitHub Action reports the same "cannot overwrite" error on first run, do this one-time CLI takeover —
-or clear the UI copies — then let the Action own them going forward.
+Do this once per asset you're bringing under version control; net-new guides that never existed in the
+UI sync without any of this.
 
 ---
 

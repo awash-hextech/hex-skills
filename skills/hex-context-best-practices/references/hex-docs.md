@@ -13,7 +13,7 @@ tell the person to confirm against the linked doc.
 
 ## Context management (the four assets)
 - Guides & workspace context — https://learn.hex.tech/docs/agent-management/context-management/guides
-- Context Sync (repo → Hex: config file, CLI, GitHub Action) — https://learn.hex.tech/docs/agent-management/context-management/context-sync
+- Context Sync (repo → Hex: config file + GitHub Action) — https://learn.hex.tech/docs/agent-management/context-management/context-sync
 - Sync automatically in CI (the Action workflow) — https://learn.hex.tech/docs/agent-management/context-management/context-sync#sync-automatically-in-ci
 - Endorsements — https://learn.hex.tech/docs/agent-management/context-management/endorsements-in-context-studio
 - Semantic models (in Context Studio) — https://learn.hex.tech/docs/agent-management/context-management/models
@@ -23,14 +23,13 @@ tell the person to confirm against the linked doc.
 ## Observability & agents
 - Context Studio — https://learn.hex.tech/docs/agent-management/context-studio
 - Agent observability — https://learn.hex.tech/docs/agent-management/observability
-- Suggestions (AI-recommended context fixes; CLI-manageable) — https://learn.hex.tech/docs/agent-management/suggestions
+- Suggestions (AI-recommended context fixes, in Context Studio) — https://learn.hex.tech/docs/agent-management/suggestions
 - Threads (product) — https://learn.hex.tech/docs/explore-data/threads
 
 ## Integrations
 - External Apps (MCP) — https://learn.hex.tech/docs/api-integrations/external-apps
 - MCP Server — https://learn.hex.tech/docs/api-integrations/mcp-server
 - Hex Agent in Slack — https://learn.hex.tech/docs/api-integrations/slack
-- CLI — https://learn.hex.tech/docs/api-integrations/cli
 
 ## Quick map: which doc for which task
 - Writing workspace context or a guide → workspace-context-best-practices
@@ -41,4 +40,4 @@ tell the person to confirm against the linked doc.
 - Connecting code repos → reference-repositories
 - Connecting Notion/Linear/custom tools → external-apps
 - Reviewing usage and trending questions → context-studio + observability
-- Finding what to improve (Suggestions, asking the agent, CLI loop) → suggestions; see references/ask-hex.md
+- Finding what to improve (Suggestions, asking the agent) → suggestions; see references/ask-hex.md

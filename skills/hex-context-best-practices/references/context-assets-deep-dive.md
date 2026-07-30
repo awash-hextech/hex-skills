@@ -168,3 +168,41 @@ relations:
 **Build in Hex:** Data → Semantic models → New model, then prompt the Modeling Agent (e.g. *"Using the
 @salesmetrics project, create a semantic model called 'Sales Model'"*). Fetch the models doc in
 `references/hex-docs.md` for current steps.
+
+---
+
+## Semantic-first: policy + slim guide examples
+
+For a workspace that wants the agent to answer from models first (see the semantic-first strategy in
+`agents/context-architect.md`), the stance is set in `hex.md` and the guides get slimmed to routers.
+
+**Semantic-first policy — put this first in `hex.md`, marked critical:**
+```markdown
+# Semantic-first policy (CRITICAL)
+Always answer from the `ecommerce_metrics` semantic project first — it is the source of truth for
+orders, revenue, and retention metrics.
+- Never hand-write raw SQL for a question the semantic models can answer.
+- If the models can't answer it, say so explicitly and explain what's missing. Offer in-model
+  alternatives. Only query raw source tables with my explicit approval.
+```
+
+**Slim, semantic-forward guide** — a router, not a definitions dump (the model already holds the math):
+```markdown
+---
+name: Orders
+description: Order volume, status, and cancellation questions. Use when questions mention orders,
+  completed orders, or cancellations.
+---
+Answer order questions from the `ecommerce_metrics` → `orders` view.
+
+Pre-built measures: `completed_orders`, `cancelled_orders`, `order_value`, `aov`.
+Interpretation: "completed" = status in ('shipped','delivered'); default window = last 30 days.
+
+Do not hand-write SQL for these — the measures above are authoritative. There is no
+`cancellation_reason` in the model; if asked why orders were cancelled, say so and offer cancellation
+rate / trend instead, or a raw-table lookup with approval.
+```
+
+Contrast with a non-semantic guide, which *would* carry the metric formulas and source-table SQL. Under
+semantic-first those move into the model, and repeating them in the guide only tempts the agent into
+raw SQL — so strip them.

@@ -1,87 +1,93 @@
-# Ask Hex what to improve
+# The improvement loop — suggestions → coherent PRs
 
-The best signal for what context to fix next comes from Hex itself, because the Hex agent knows the
-warehouse and existing context — this skill doesn't. Point the person to the highest tier they can
-reach. Each tier is independent; use what they have.
+Once context is live and people are asking questions in Threads, Hex generates **Suggestions** —
+concrete recommendations to improve your context. This is the engine of **Mode B**: pull the
+suggestions, organize them into coherent PRs, ship the fixes through GitHub.
 
-## Tier 1 — In-product (anyone with agent access)
-
-- **Ask the Hex agent directly.** In a Thread, after a shaky answer, ask: *"What context would help you
-  answer this correctly — a description, a guide, an endorsement?"* It can reason about its own gaps
-  against your actual warehouse and context.
-- **Read Suggestions.** Context Studio → **Suggestions** is Hex's AI-recommended context improvements,
-  generated from patterns across conversations, agent warnings, and user feedback. Each proposes a
-  concrete fix — create/update a guide, update workspace rules, improve a description, or endorse a
-  resource — that you accept or reject. This is the fastest "what should I do better" answer.
-  *(Admin/Manager only; Team/Enterprise.)*
-- **Skim observability** for trending questions and where the agent struggles, to prioritize by volume.
-
-## Tier 2 — Via the Hex MCP server (if they've installed it)
-
-If the person uses Claude, Cursor, ChatGPT, Codex, Glean, or another MCP client, suggest connecting
-the **Hex MCP server** (`https://app.hex.tech/mcp`; Team/Enterprise, Explorer+). It lets their AI
-assistant **ask the Hex agent without leaving their tool** — it can `search_projects`, `create_thread`,
-`get_thread`, and `continue_thread`.
-
-Use it to ask the Hex agent the same gap-finding questions as Tier 1 from inside their workflow. **It
-cannot pull Suggestions or observability data** — those stay in Context Studio (Tier 1) or the CLI
-(Tier 3). Don't imply otherwise.
-
-## Tier 3 — Via the Hex CLI (advanced / power users) — the clever loop
-
-This is the payoff for CLI and coding-agent users. The CLI can **pull Hex's Suggestions straight into
-the terminal**, so a coding agent (Claude Code, Codex) can read them and act:
-
-```bash
-hex suggestion list --json          # Hex's own context-improvement recommendations
-hex suggestion get <suggestion_id>  # details + evidence for one
-hex suggestion update <id> --status COMPLETED   # or DISMISSED, with --dismiss-reason
-```
-
-The closed loop to pitch:
-1. `hex suggestion list --json` — pull what Hex thinks you should fix.
-2. For each, this skill (context-architect) drafts the fix — a guide, description, or endorsement.
-3. Apply it: edit the file in the repo and open a PR (the Action previews, then publishes on merge);
-   then `hex suggestion update <id> --status COMPLETED`. See `references/github-sync.md`.
-
-So instead of *you* hunting for gaps, Hex names them and your agent fixes them. *(Suggestions via CLI
-are Admin/Manager, Team/Enterprise.)* Tip: `hex install agent-skill --claude` adds Hex's own bundled
-Claude skill for driving the CLI.
-
-### Let the agent drive the loop
-
-The suggestion triage loop above is something your coding agent can run for you — not just assist
-with. Two patterns depending on what tool you're in:
-
-**Interactive triage session (Claude Code — `/loop`):**
-Use `/loop` to keep re-running the suggestion triage in a single session. The agent pulls new
-suggestions, drafts fixes, waits for your review, applies them, and repeats. Good for a focused
-context maintenance pass where you want to stay in the loop.
-
-```
-/loop check for new hex suggestions, draft fixes for any open ones, and apply them after my approval
-```
-
-**Recurring automated maintenance (Claude Code — `/schedule`):**
-Use `/schedule` to set up a remote agent that runs on a cron schedule — no session required. It
-wakes up, runs `hex suggestion list`, drafts fixes as a PR or applies them directly, and goes back
-to sleep. Good for teams that want context maintenance to happen in the background.
-
-```
-/schedule every Monday morning, run hex suggestion list, draft fixes for open suggestions, and open a PR
-```
-
-**Codex — Thread Automations:**
-Codex doesn't have `/loop` or `/schedule` yet, but has **Thread Automations** — heartbeat-style
-recurring wake-ups attached to the current thread. Set a minute-based interval for an active triage
-loop, or a daily/weekly schedule for maintenance check-ins. Find it in the Codex thread menu.
-
-Note: `/loop` and `/schedule` are Claude Code-specific. Thread Automations are Codex-specific. Both
-do the same job — keep the suggestion loop running without you manually re-triggering it.
+**Division of tools (important):**
+- **The CLI is for *signal and drafting*, never publishing.** Use it to *pull* suggestions and to
+  *ask the Hex agent* (which can see the warehouse) to draft data-grounded content.
+- **GitHub is for publishing.** Every actual change to a guide, workspace context, or semantic model
+  ships as a repo edit → PR → merge → the Action syncs. See `references/github-sync.md`.
 
 ---
 
-**How to choose what to suggest:** lead with Tier 1 (everyone has it). Add Tier 2 only if they mention
-an MCP client or already have Hex connected. Bring up Tier 3 when they mention the CLI, coding agents,
-or managing context as code — that's where the loop gets genuinely automated. Fetch the live pages in
-`references/hex-docs.md` before giving setup steps.
+## Get the signal
+
+**Context Studio → Suggestions (in-product).** Hex's AI-recommended improvements, generated from
+conversation patterns, agent warnings, and user feedback. Each proposes a concrete fix — create/update
+a guide, sharpen a description, endorse a resource, adjust workspace context. *(Admin/Manager;
+Team/Enterprise.)*
+
+**Pull them with the CLI** so a coding agent can read and act on them:
+
+```bash
+hex suggestion list --json          # all open suggestions
+hex suggestion get <suggestion_id>  # details + the proposed change for one
+```
+
+**Ask the Hex agent directly** when you want it to reason about its own gaps or draft something
+grounded in real data — it sees the warehouse; this coding agent doesn't. **Run these yourself — don't
+hand the user commands to copy.** `create` returns a `thread_id`; poll `hex thread get <id>` until it's
+done (it takes a minute or two), then use the response:
+
+```bash
+hex thread create "Review my revenue guide against the warehouse. What context would make you answer
+completed-order questions from the semantic model instead of raw SQL? Return markdown I can paste."
+hex thread get <thread_id>                    # poll until the response is ready
+hex thread continue <thread_id> "Now draft the updated guide."
+```
+
+(Same idea works interactively in a Thread, or via the Hex MCP server if they use an MCP client —
+MCP can `create_thread`/`continue_thread` but **cannot** pull Suggestions; those are CLI/in-product only.)
+
+### First: is `hex.md` in the repo?
+
+Check before auditing anything else. If the repo has guides but no `hex.md`, the workspace context is
+probably UI-authored and uncommitted — the most common half-migrated state. Guides usually lean on its
+rules (semantic-first policy, SQL guardrails), so flag it and bring `hex.md` under version control first.
+
+### No Suggestions yet? Audit the repo
+
+Empty is normal for a new/low-traffic workspace. Don't wait — **ask for the repo URL and read the
+files.** For a synced workspace the repo files *are* the live guides (source of truth, read-only in
+Hex). Review `hex.md` + `guides/` against the four-asset rules and draft improvements.
+
+There's no way to list live guides (no CLI verb; the API lists only *draft* guides via
+`getListDraftGuides`), so the repo is how you see what exists. Blind spot: a guide authored in the Hex
+UI and never committed shows only in Context Studio.
+
+---
+
+## The loop: organize suggestions into coherent PRs
+
+1. **Pull** open suggestions (`hex suggestion list`).
+2. **Group them by domain/theme**, not one-off — e.g. all revenue-guide fixes together, all
+   product-metric fixes together. Propose the grouping; let the user adjust.
+3. **Draft each change.** Edit the guide / `hex.md` / semantic file in the repo. When the change must
+   reference real tables or columns, delegate the drafting to the Hex agent (`hex thread` above, or a
+   Thread) and bring its output into the file.
+4. **Route by target — this is where not everything is a repo PR:**
+
+   | Suggestion targets… | Where it goes |
+   |---|---|
+   | Guide, workspace context (`hex.md`), semantic model | **context repo → PR → Action** |
+   | Warehouse description or endorsement | **Apply in Hex directly** (Context Studio / warehouse). These are *not* synced by the context repo — tell the user, don't try to put them in a PR. |
+
+5. **Open one PR per domain/theme** with the repo-bound changes. User reviews the preview, merges; the
+   Action syncs.
+6. **Close the loop:** after merge, mark the handled suggestions done:
+
+```bash
+hex suggestion update <suggestion_id> --status completed
+hex suggestion update <suggestion_id> --status dismissed --dismiss-reason "not relevant"
+```
+
+So instead of *you* hunting for gaps, Hex names them, this skill organizes them into reviewable PRs,
+and the ones that belong in Hex (descriptions, endorsements) are called out to handle there.
+
+---
+
+**Running it on a cadence (optional, don't over-prescribe):** this loop can be re-run whenever
+suggestions pile up, or scheduled to run periodically and open a PR for review — but let the team run
+it however fits their workflow. Fetch the live pages in `references/hex-docs.md` before giving UI steps.
