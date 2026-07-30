@@ -19,7 +19,7 @@ conversation patterns, agent warnings, and user feedback. Each proposes a concre
 a guide, sharpen a description, endorse a resource, adjust workspace context. *(Admin/Manager;
 Team/Enterprise.)*
 
-**Pull them with the CLI** so a coding agent can read and act on them:
+**Pull them with the CLI** so you can read and act on them:
 
 ```bash
 hex suggestion list --json          # all open suggestions
@@ -38,7 +38,7 @@ hex thread get <thread_id>                    # poll until the response is ready
 hex thread continue <thread_id> "Now draft the updated guide."
 ```
 
-(Same idea works interactively in a Thread, or via the Hex MCP server if they use an MCP client —
+(Same idea works interactively in a Thread, or via the Hex MCP server if you use an MCP client —
 MCP can `create_thread`/`continue_thread` but **cannot** pull Suggestions; those are CLI/in-product only.)
 
 ### First: is `hex.md` in the repo?
@@ -63,7 +63,7 @@ UI and never committed shows only in Context Studio.
 
 1. **Pull** open suggestions (`hex suggestion list`).
 2. **Group them by domain/theme**, not one-off — e.g. all revenue-guide fixes together, all
-   product-metric fixes together. Propose the grouping; let the user adjust.
+   product-metric fixes together. Propose the grouping and adjust as needed.
 3. **Draft each change.** Edit the guide / `hex.md` / semantic file in the repo. When the change must
    reference real tables or columns, delegate the drafting to the Hex agent (`hex thread` above, or a
    Thread) and bring its output into the file.
@@ -72,7 +72,7 @@ UI and never committed shows only in Context Studio.
    | Suggestion targets… | Where it goes |
    |---|---|
    | Guide, workspace context (`hex.md`), semantic model | **context repo → PR → Action** |
-   | Warehouse description or endorsement | **Apply in Hex directly** (Context Studio / warehouse). These are *not* synced by the context repo — tell the user, don't try to put them in a PR. |
+   | Warehouse description or endorsement | **Apply in Hex directly** (Context Studio / warehouse). These are *not* synced by the context repo — flag it, don't try to put them in a PR. |
 
 5. **Open one PR per domain/theme** with the repo-bound changes. User reviews the preview, merges; the
    Action syncs.
@@ -89,5 +89,5 @@ and the ones that belong in Hex (descriptions, endorsements) are called out to h
 ---
 
 **Running it on a cadence (optional, don't over-prescribe):** this loop can be re-run whenever
-suggestions pile up, or scheduled to run periodically and open a PR for review — but let the team run
-it however fits their workflow. Fetch the live pages in `references/hex-docs.md` before giving UI steps.
+suggestions pile up, or scheduled to run periodically and open a PR for review — run it however fits
+your workflow. Fetch the live pages in `references/hex-docs.md` before giving UI steps.

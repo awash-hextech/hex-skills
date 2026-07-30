@@ -1,7 +1,7 @@
 ---
 name: Guide-Writing Guide — How to Build Workspace Context and Guides
 description: >
-  Use when someone wants to write or improve workspace context or a workspace guide, set up context
+  Use when you want to write or improve workspace context or a workspace guide, set up context
   for a new domain, improve agent accuracy, or understand best practices for context authoring in
   Hex. Retrieves on: "help me write a guide", "write my workspace context", "how do I add context",
   "the agent keeps getting it wrong", "set up context for revenue", "context strategy", "how do I

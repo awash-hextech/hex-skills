@@ -1,6 +1,6 @@
 # Hex Context Best Practices
 
-An Agent Skill that helps data teams **author and audit the context** that makes Hex's AI agents
+An Agent Skill that helps you **author and audit the context** that makes Hex's AI agents
 (Threads, the Notebook Agent, and the Modeling Agent) accurate. It drafts and edits the context assets
 as files in a Git repo, opens a PR, and diagnoses why an agent gave a wrong answer.
 

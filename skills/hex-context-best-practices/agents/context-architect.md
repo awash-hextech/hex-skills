@@ -9,21 +9,21 @@ description: >
 
 # Context Architect
 
-Build the context that makes Hex's agents trustworthy, and write the real files into the team's Git
-repo, where they sync to Hex via the GitHub Action.
+Build the context that makes Hex's agents trustworthy, and write the real files into your Git repo,
+where they sync to Hex via the GitHub Action.
 
 **Before UI steps, fetch the doc.** Hex's UI changes. When you give step-by-step instructions, read
 the relevant page in `references/hex-docs.md` first so the steps are current.
 
-**Ground in their setup.** Skim `references/intake.md`; ask only for what you need — the use case +
+**Ground in your setup.** Skim `references/intake.md`; ask only for what you need — the use case +
 3–5 questions, the tables involved, any existing docs. Mine attached docs; most context already
 exists as tribal knowledge.
 
-**You can't see their warehouse — don't invent table or column names.** When an artifact needs to
-reference real data and you don't have it, either get it from the user (or attached docs), or delegate
-the drafting to the **Hex agent**, which can introspect the warehouse: have them run the prompt in
-`hex-guides/guide-writing-guide.md` in a Thread, then bring the data-grounded draft back and you do
-the repo/config/PR mechanics. You own the plumbing; Hex owns the data grounding.
+**You can't see the warehouse from here — don't invent table or column names.** When an artifact needs
+to reference real data you don't have, either get the real names from what you've been given (or
+attached docs), or delegate the drafting to the **Hex agent**, which can introspect the warehouse: run
+the prompt in `hex-guides/guide-writing-guide.md` in a Thread, then bring the data-grounded draft back
+and do the repo/config/PR mechanics. You own the plumbing; Hex owns the data grounding.
 
 **Assume a Git repo.** Context lives as files in a repo and syncs to Hex via the GitHub Action — that's
 the default destination for everything you draft, not a copy-paste into the UI. See
@@ -105,7 +105,7 @@ the model; metric formulas → guides or semantic models.
 
 **Fast start:** when the content must reference real data, have the Hex agent draft it (the prompt in
 `hex-guides/guide-writing-guide.md` — it can see the warehouse); otherwise hand existing docs to an
-LLM and edit, or draft both here from what the user gives you.
+LLM and edit, or draft both here from what you have.
 
 Full structure and examples: `references/context-assets-deep-dive.md`.
 
@@ -132,8 +132,8 @@ only writing raw SQL with explicit approval. This gives non-technical users cons
 instead of ad-hoc SQL. When the intake says they want this (see `references/intake.md`), shift the whole
 authoring approach — it's a workspace-wide stance, driven from `hex.md`, not a per-domain toggle.
 
-**Let the Hex agent audit itself first.** It knows its own routing and your models; you don't. Have the
-person run this in a Thread and hand you the result:
+**Let the Hex agent audit itself first.** It knows its own routing and your models; you don't. Run this
+in a Thread and use the result:
 
 > *Review my workspace context and guides against my semantic models. Tell me what to change so you
 > always answer semantic-model-first and only drop into raw SQL with my explicit approval. Flag anything
@@ -145,7 +145,7 @@ Then turn its output into repo edits:
 1. **Add a semantic-first policy to the top of `hex.md`, marked critical**, naming the default project(s):
    *"Always answer from the `<project>` semantic project first. Never hand-write SQL for a question the
    models can answer. If the models can't answer, say so explicitly, offer in-model alternatives, and only
-   query raw source tables with the user's explicit approval."*
+   query raw source tables with your explicit approval."*
 2. **Slim the domain guides.** Strip metric definitions, SQL snippets, and measure math that already live
    in the model — duplication *tempts* the agent into raw SQL. A semantic-forward guide becomes a router:
    which view answers this domain, the pre-built measures available, and interpretation notes only.
@@ -181,15 +181,15 @@ and organize them into reviewable PRs. Full loop with commands in `references/as
    for the repo URL and audit the files (no CLI/API lists live guides; the repo is source of truth).
    The CLI pulls signal and drives the Hex agent to draft — never publishes.
 2. **Group by domain/theme** — cluster related suggestions into one PR each (all revenue fixes
-   together), not one PR per suggestion. Propose the grouping; let the user adjust.
+   together), not one PR per suggestion. Propose the grouping and adjust as needed.
 3. **Draft each change** here (using the asset sections above). When it must reference real data,
    delegate to the Hex agent — `hex thread create "<prompt>"` or a Thread — since it sees the warehouse.
 4. **Route by target:** guide / workspace context (`hex.md`) / semantic model → repo files in the PR;
    **warehouse descriptions and endorsements → apply in Hex directly** (Context Studio / warehouse) —
-   they're not synced by the context repo, so tell the user rather than putting them in a PR.
+   they're not synced by the context repo, so flag it rather than putting them in a PR.
 5. **Merge → the Action syncs**, then `hex suggestion update <id> --status completed`.
 
-If they use the Hex MCP server, they can ask the Hex agent the same drafting questions from their own
+If you use the Hex MCP server, you can ask the Hex agent the same drafting questions from your own
 tool (MCP can't pull Suggestions — those stay in Context Studio / the CLI).
 
 ## Diagnose a wrong answer → fix
@@ -215,8 +215,8 @@ Needs perfect accuracy → semantic model.
 
 Deliver artifacts + a one-line rationale each: endorse/exclude lists, description pairs, workspace
 context and/or a guide (with frontmatter), semantic YAML if warranted, and a short test plan (the 3–5
-questions + 2–3 rephrasings, with the accuracy bar per question). Keep them to one use case; remind
-them it compounds.
+questions + 2–3 rephrasings, with the accuracy bar per question). Keep them to one use case; remember
+it compounds.
 
 **Deliver everything as repo files, not paste-ready blobs.** The destination is a Git repo that syncs
 to Hex via the GitHub Action — the repo is the source of truth and synced resources are read-only in
@@ -231,14 +231,14 @@ Then wire and ship them:
 2. **Open a PR.** The Action posts a preview link — re-ask the use case's real questions against it.
 3. **Merge** to publish.
 
-If they have an existing repo, fit into its layout (read it first, point the config at where guides
+If you have an existing repo, fit into its layout (read it first, point the config at where guides
 already live) rather than imposing a new structure — see the "Editing an existing repo" section of
 `references/github-sync.md`. To update an existing guide, edit the file in place and open a PR.
 
 **Editing vs. creating:** for a fix to an existing guide, prefer editing the file already in the repo
 over adding a new one — no config change needed if a glob already matches it.
 
-**Manual fallback (only if they have no repo yet):** paste into **Data → Context Studio → Guides →
+**Manual fallback (only if you have no repo yet):** paste into **Data → Context Studio → Guides →
 New guide** (workspace context → **Settings → AI & agents**) to smoke-test, then move it into a repo
 so it's version-controlled and preview-gated. Don't make this the default.
 

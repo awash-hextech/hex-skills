@@ -9,7 +9,7 @@ Don't feel you need all of this before starting — the agent will ask for what 
 infer the rest, flagging assumptions.
 
 ## About your team & stack
-- How big is the data team, and who would own context work? (analytics engineers, analysts, admins)
+- How big is your data team, and who would own context work? (analytics engineers, analysts, admins)
 - What warehouse are you on? (Snowflake, BigQuery, Databricks, Redshift, Postgres…)
 - Do you use dbt or another transformation layer?
 - Do you already have a semantic layer? (Cube, dbt MetricFlow, Snowflake Semantic Views, LookML…)

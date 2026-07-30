@@ -12,11 +12,11 @@ author/edit files in the repo  →  open a PR  →  user merges  →  the GitHub
 ```
 
 The skill **never publishes via the Hex CLI or by pasting into the UI** — it produces file changes and
-a PR; the user's merge and the Action do the deploy. Fetch the live pages in `references/hex-docs.md`
+a PR; your merge and the Action do the deploy. Fetch the live pages in `references/hex-docs.md`
 before giving UI steps — Hex's UI changes. Authoritative doc: **Context Sync** (linked there).
 
-If they don't have a context repo yet, **Step 1 is to create one** (below). If they already have a
-repo wired to the Action, skip setup and go straight to the workflow loop at the bottom.
+If you don't have a context repo yet, **Step 1 is to create one** (below). If you already have a repo
+wired to the Action, skip setup and go straight to the workflow loop at the bottom.
 
 ---
 
@@ -42,7 +42,7 @@ the PR + Action.)
 
 ## Step 1 — Create the context repo
 
-If the team has no repo for context yet, create one (a new GitHub repo, or a folder in an existing
+If you have no repo for context yet, create one (a new GitHub repo, or a folder in an existing
 one — see "Editing an existing repo"). The one rule to state clearly:
 
 > **`hex.md` at the repo root is the workspace context** (always-on, sent with every prompt).
@@ -221,8 +221,7 @@ Teams often already have a repo (dbt project, analytics monorepo). Don't impose 
 
 ## Manual fallback (no repo yet)
 
-If someone has no repo and just wants to test a single guide right now: **Data → Context Studio →
+If you have no repo and just want to test a single guide right now: **Data → Context Studio →
 Guides → New guide**, paste, save; workspace context goes in **Settings → AI & agents**. This is a
 quick smoke test, not the destination — anything pasted this way should move into the repo so it's
-version-controlled and preview-gated. Steer them to set up the repo + Action as soon as they're
-iterating for real.
+version-controlled and preview-gated. Set up the repo + Action as soon as you're iterating for real.

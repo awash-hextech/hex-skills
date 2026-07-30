@@ -2,7 +2,7 @@
 
 Hex's product changes. **Before giving step-by-step instructions, read the relevant page** so the
 steps match the current UI. If you can't fetch (offline/headless), give the steps from this skill and
-tell the person to confirm against the linked doc.
+confirm against the linked doc.
 
 ## Best-practice tutorials
 - Set up your workspace for AI agents — https://learn.hex.tech/tutorials/ai-best-practices/setup-for-ai-agents
