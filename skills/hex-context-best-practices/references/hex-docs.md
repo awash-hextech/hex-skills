@@ -13,6 +13,8 @@ tell the person to confirm against the linked doc.
 
 ## Context management (the four assets)
 - Guides & workspace context — https://learn.hex.tech/docs/agent-management/context-management/guides
+- Context Sync (repo → Hex: config file, CLI, GitHub Action) — https://learn.hex.tech/docs/agent-management/context-management/context-sync
+- Sync automatically in CI (the Action workflow) — https://learn.hex.tech/docs/agent-management/context-management/context-sync#sync-automatically-in-ci
 - Endorsements — https://learn.hex.tech/docs/agent-management/context-management/endorsements-in-context-studio
 - Semantic models (in Context Studio) — https://learn.hex.tech/docs/agent-management/context-management/models
 - Semantic models intro — https://learn.hex.tech/docs/connect-to-data/semantic-models/intro-to-semantic-models
@@ -32,6 +34,7 @@ tell the person to confirm against the linked doc.
 
 ## Quick map: which doc for which task
 - Writing workspace context or a guide → workspace-context-best-practices
+- Getting guides/context into Hex from a repo (config, CLI, Action) → context-sync; see references/github-sync.md
 - Endorsing / excluding tables → setup-for-ai-agents + endorsements
 - Adding descriptions → setup-for-ai-agents
 - Building/syncing a semantic model → models + semantic-models intro

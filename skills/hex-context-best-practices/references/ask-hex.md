@@ -41,8 +41,8 @@ hex suggestion update <id> --status COMPLETED   # or DISMISSED, with --dismiss-r
 The closed loop to pitch:
 1. `hex suggestion list --json` — pull what Hex thinks you should fix.
 2. For each, this skill (context-architect) drafts the fix — a guide, description, or endorsement.
-3. Apply it: publish in Hex, or for GitHub-synced guides commit the change; then
-   `hex suggestion update <id> --status COMPLETED`.
+3. Apply it: edit the file in the repo and open a PR (the Action previews, then publishes on merge);
+   then `hex suggestion update <id> --status COMPLETED`. See `references/github-sync.md`.
 
 So instead of *you* hunting for gaps, Hex names them and your agent fixes them. *(Suggestions via CLI
 are Admin/Manager, Team/Enterprise.)* Tip: `hex install agent-skill --claude` adds Hex's own bundled

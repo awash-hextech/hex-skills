@@ -15,32 +15,32 @@ hex-context-best-practices/
 │   ├── context-architect.md          # draft the context assets; fix wrong answers
 │   └── rollout-planner.md            # phased Threads rollout + tracker offer
 ├── references/
+│   ├── github-sync.md                # repo layout, config, the GitHub Action — the default path
 │   ├── intake.md                     # questionnaire to customize to a setup
 │   ├── context-assets-deep-dive.md   # workspace context/guides + semantic YAML examples
 │   ├── advanced-context.md           # reference repositories + External Apps / MCP
 │   ├── ask-hex.md                    # in-product / MCP / CLI ways to get Hex's improvement signal
 │   └── hex-docs.md                   # canonical Hex doc links (fetch before UI steps)
 └── hex-guides/
-    └── guide-writing-guide.md        # install into Hex — teaches the agent to help write guides
+    └── guide-writing-guide.md        # add to Hex — has the Hex agent draft data-grounded context
 ```
 
+## The model: context as code
+
+Guides and workspace context live as Markdown files in a **Git repo** and sync into Hex through the
+[`hex-inc/action-context-toolkit`](https://github.com/hex-inc/action-context-toolkit) GitHub Action.
+The repo is the source of truth; open a PR to preview changes in a live thread, merge to publish, and
+synced resources are read-only in Hex. The skill sets this up and then authors/edits files against it.
+
+Two agents split the work:
+- **A coding agent with this skill** owns the plumbing — repo layout, `hex_context.config.json`, the
+  Action, git/PR flow, Markdown structure. It can't see your warehouse.
+- **The Hex agent** (Threads/Notebook) can see your warehouse, so it drafts data-grounded content
+  ("write me a guide for revenue using my workspace"). Its drafts flow back into the repo.
+
+Setup lives in [`references/github-sync.md`](references/github-sync.md).
+
 ## Install
-
-### Use inside Hex (no CLI needed)
-
-If you're working in Hex and want the agent to help you write workspace context and guides without
-leaving the product, install the **guide-writing guide** into your workspace once:
-
-1. Copy the contents of [`hex-guides/guide-writing-guide.md`](hex-guides/guide-writing-guide.md).
-2. In Hex: **Data → Context Studio → Guides → New guide**. Paste and save.
-
-That's it. From then on, whenever anyone asks the Hex agent *"help me write a guide"* or *"how do
-I add context for revenue"*, it retrieves this guide and walks them through it — all from inside
-Hex, using the Notebook Agent against your actual warehouse.
-
-This is the recommended next step after you've set up your initial context strategy.
-
----
 
 ### Claude Code (plugin marketplace)
 
@@ -80,9 +80,12 @@ cp -r hex-skills/skills/hex-context-best-practices ~/.claude/skills/
 1. The agent reads `SKILL.md`, learns the mental model (four context assets on a guidance→governance
    spectrum, plus advanced sources), and routes to a specialist.
 2. It gathers a little context via `references/intake.md` (or mines docs you attach).
-3. **Context Architect** drafts paste-ready assets and a test plan, scoped to one use case.
-4. **Rollout Planner** produces a phased plan and can turn it into a spreadsheet or Notion tracker.
-5. You iterate — context compounds, and each new use case gets faster.
+3. **Context Architect** writes the assets as repo files (`hex.md`, `guides/<domain>.md`, semantic
+   YAML) + a test plan, scoped to one use case — delegating data-grounded drafting to the Hex agent.
+4. It wires up `hex_context.config.json` and the GitHub Action so a PR previews and a merge publishes
+   (`references/github-sync.md`).
+5. **Rollout Planner** produces a phased plan and can turn it into a spreadsheet or Notion tracker.
+6. You iterate — context compounds, and each new use case is another PR.
 
 ## Credit
 

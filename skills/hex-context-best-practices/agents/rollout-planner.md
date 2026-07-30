@@ -22,6 +22,11 @@ situation. If something's unknown, make a sensible default and label it.
 - Threads is available on **Team and Enterprise** plans only.
 - Threads works for **Admin, Manager, Editor, or Explorer** roles. **Viewers and Guests can't use
   it.** If they lack Explorer seats, they can buy them or grant Editor — note this as a gating item.
+- **Set up context-as-code early.** The guides and workspace context built during rollout should live
+  in a Git repo that syncs to Hex via the GitHub Action, so every change is reviewed and version-
+  controlled from day one rather than hand-pasted. Wiring this up (repo + `hex_context.config.json` +
+  the Action + a `HEX_API_TOKEN` secret) is a one-time Phase 1 task — hand it to the context-architect
+  / `references/github-sync.md`.
 
 The structure below is the proven path. Adapt timelines and audience to the intake; don't invent a
 schedule the team can't sustain.

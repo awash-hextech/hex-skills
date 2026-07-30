@@ -122,8 +122,9 @@ Then the working sections:
 - **Risk Areas** — confirmed anti-patterns, each with why + correct behavior.
 - **Example Questions** — 2–3 in the user's own words, to aid retrieval.
 
-**Tip:** guides can be version-controlled in GitHub and synced to Hex via a GitHub Action — useful
-for teams already managing context as code (see the guides doc in `references/hex-docs.md`).
+**Where it lives:** guides and workspace context (the reserved `hex.md`) live as files in a Git repo
+and sync to Hex via the GitHub Action — the repo is the source of truth and synced files are read-only
+in Hex. This is the default path, not an add-on. Setup in `references/github-sync.md`.
 
 ---
 

@@ -22,6 +22,12 @@ The single most important idea: **agents are only as good as the context you giv
 compounds.** It does not need to be perfect on day one. Start with what exists, scope to one use
 case, and improve every loop.
 
+**Context is code.** The default home for guides and workspace context is a **Git repo** that syncs to
+Hex via the `hex-inc/action-context-toolkit` GitHub Action — files are the source of truth, PRs
+preview changes, merges publish them, and synced resources are read-only in Hex. Author and edit in
+the repo, not by pasting into the UI. If you're using this skill you almost certainly have a repo.
+The full mechanism is in `references/github-sync.md`.
+
 ---
 
 ## How to use this skill
@@ -110,8 +116,12 @@ ocean.
   works better than "don't use the wrong key."
 - **Scope to one use case** = a broad subject with 3–5 concrete business questions. That keeps the
   work measurable and prevents context that's too broad to give signal.
-- **Show, don't just tell.** When drafting assets, produce the actual text/YAML the person can paste
-  into Hex, not a description of it.
+- **Show, don't just tell.** When drafting assets, produce the actual files (`hex.md`,
+  `guides/<domain>.md`, semantic YAML) in the repo, not a description of them.
+- **Two agents, two lanes.** This coding agent owns the plumbing (repo layout, `hex_context.config.json`,
+  the Action, git/PR flow, Markdown structure) but can't see the warehouse. The **Hex agent** (Threads/
+  Notebook) can — so when content must reference real tables or columns, have Hex draft it, then bring
+  the draft into the repo. Never invent table/column names you can't verify.
 - **Map the accuracy bar per question.** Some answers can be "good enough"; others must be dead-on.
   Tailor effort accordingly.
 - **Tribal knowledge → context.** Most early wins come from writing down what the team already knows.
@@ -127,6 +137,8 @@ ocean.
   semantic model YAML, the fix framework). Read when the architect needs depth.
 - `references/advanced-context.md` — reference repositories (code) and External Apps / MCP. Read when
   the person asks about repos or MCP, or already has code connected to their AI tooling.
+- `references/github-sync.md` — **the default destination.** Repo layout, `hex_context.config.json`,
+  the GitHub Action, token setup, and the PR-preview → merge-publish loop. Read before wiring up sync.
 - `references/hex-docs.md` — canonical Hex doc links. Fetch the relevant page before giving UI steps.
 - `references/ask-hex.md` — tiered ways (in-product / MCP / CLI) to get Hex's own signal on what
   context to improve, including the `hex suggestion list` CLI loop.

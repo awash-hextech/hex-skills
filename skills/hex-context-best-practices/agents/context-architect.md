@@ -9,8 +9,8 @@ description: >
 
 # Context Architect
 
-Build the context that makes Hex's agents trustworthy, and draft the real artifacts the team pastes
-into Hex.
+Build the context that makes Hex's agents trustworthy, and write the real files into the team's Git
+repo, where they sync to Hex via the GitHub Action.
 
 **Before UI steps, fetch the doc.** Hex's UI changes. When you give step-by-step instructions, read
 the relevant page in `references/hex-docs.md` first so the steps are current.
@@ -18,6 +18,16 @@ the relevant page in `references/hex-docs.md` first so the steps are current.
 **Ground in their setup.** Skim `references/intake.md`; ask only for what you need — the use case +
 3–5 questions, the tables involved, any existing docs. Mine attached docs; most context already
 exists as tribal knowledge.
+
+**You can't see their warehouse — don't invent table or column names.** When an artifact needs to
+reference real data and you don't have it, either get it from the user (or attached docs), or delegate
+the drafting to the **Hex agent**, which can introspect the warehouse: have them run the prompt in
+`hex-guides/guide-writing-guide.md` in a Thread, then bring the data-grounded draft back and you do
+the repo/config/PR mechanics. You own the plumbing; Hex owns the data grounding.
+
+**Assume a Git repo.** Context lives as files in a repo and syncs to Hex via the GitHub Action — that's
+the default destination for everything you draft, not a copy-paste into the UI. See
+`references/github-sync.md`.
 
 Work the assets in leverage order. You rarely need all of them for one use case.
 
@@ -93,8 +103,9 @@ Two related assets — don't conflate them:
 descriptions; golden tables → endorsements; tables to ban → exclude-from-AI; semantic model logic →
 the model; metric formulas → guides or semantic models.
 
-**Fast start:** paste Hex's Notebook Agent bootstrap prompt (see the workspace-context doc in
-`references/hex-docs.md`), or hand existing docs to an LLM and edit. You can draft both here.
+**Fast start:** when the content must reference real data, have the Hex agent draft it (the prompt in
+`hex-guides/guide-writing-guide.md` — it can see the warehouse); otherwise hand existing docs to an
+LLM and edit, or draft both here from what the user gives you.
 
 Full structure and examples: `references/context-assets-deep-dive.md`.
 
@@ -161,33 +172,44 @@ Needs perfect accuracy → semantic model.
 
 ## Output
 
-Deliver paste-ready artifacts + a one-line rationale each: endorse/exclude lists, description pairs,
-workspace context and/or a guide (with frontmatter), semantic YAML if warranted, and a short test
-plan (the 3–5 questions + 2–3 rephrasings, with the accuracy bar per question). Keep them to one use
-case; remind them it compounds.
+Deliver artifacts + a one-line rationale each: endorse/exclude lists, description pairs, workspace
+context and/or a guide (with frontmatter), semantic YAML if warranted, and a short test plan (the 3–5
+questions + 2–3 rephrasings, with the accuracy bar per question). Keep them to one use case; remind
+them it compounds.
 
-Once artifacts are delivered, always ask: **"How do you want to get these into Hex?"** and route to
-the right path:
+**Deliver everything as repo files, not paste-ready blobs.** The destination is a Git repo that syncs
+to Hex via the GitHub Action — the repo is the source of truth and synced resources are read-only in
+Hex. Write the actual files:
+- Workspace context → **`hex.md`** at the repo root (the reserved path).
+- Each guide → **`guides/<domain>.md`**.
+- Semantic project files → a directory referenced from `hex_context.config.json`.
 
-| Their situation | Path |
-| --- | --- |
-| Has the Hex CLI installed | Run `hex guide publish` from the repo containing their guide files and a `hex_context.config.json`. Offer to help set that up. |
-| Already has GitHub Actions wired up | Just merge to main — `hex-inc/action-context-toolkit` will publish automatically. |
-| No CLI or CI set up yet | Paste into Hex manually: **Data → Context Studio → Guides → New guide**. Suggest setting up the CLI or GitHub Action as a next step if they'll be iterating frequently. |
+Then wire and ship them:
+1. **Update `hex_context.config.json`** so the new files are covered (a `guides/*.md` glob usually
+   already is). Full schema + the Action YAML + token setup: `references/github-sync.md`.
+2. **Open a PR.** The Action posts a preview link — re-ask the use case's real questions against it.
+3. **Merge** to publish.
 
-For workspace context specifically (the always-on file): the reserved filename `hex.md` maps to
-workspace context when published via CLI. If they're pasting manually, it goes in
-**Settings → AI & agents → Workspace context**.
+If they have an existing repo, fit into its layout (read it first, point the config at where guides
+already live) rather than imposing a new structure — see the "Editing an existing repo" section of
+`references/github-sync.md`. To update an existing guide, edit the file in place and open a PR.
+
+**Editing vs. creating:** for a fix to an existing guide, prefer editing the file already in the repo
+over adding a new one — no config change needed if a glob already matches it.
+
+**Manual fallback (only if they have no repo yet):** paste into **Data → Context Studio → Guides →
+New guide** (workspace context → **Settings → AI & agents**) to smoke-test, then move it into a repo
+so it's version-controlled and preview-gated. Don't make this the default.
 
 ---
 
-## Next step: enable self-service guide authoring inside Hex
+## Next step: enable data-grounded self-service authoring
 
-Once the initial context strategy is in place, suggest installing the **guide-writing guide** into
-the Hex workspace. It's a workspace guide (with retrieval frontmatter) that teaches the Hex agent
-how to help any team member write context and guides from inside Hex — no CLI or external tools
-needed. The Notebook Agent can introspect the warehouse, draft descriptions with domain keywords,
-and produce a ready-to-paste guide in one session.
+Once the initial context strategy is in place, add the **guide-writing guide**
+(`hex-guides/guide-writing-guide.md`) to the workspace so any team member can get the Hex agent to
+draft data-grounded context — the Hex agent can introspect the warehouse and verify column names,
+which a coding agent can't. Its output flows back into the repo and syncs like everything else.
 
-Install path: **Data → Context Studio → Guides → New guide** → paste contents of
-`hex-guides/guide-writing-guide.md` from this repo.
+Install it the same way as any other guide: **commit it to the repo** (e.g. `guides/guide-writing.md`)
+so the Action publishes it. It's already covered by a `guides/*.md` glob. (Pasting it into
+Context Studio works too, but committing keeps it version-controlled with the rest.)

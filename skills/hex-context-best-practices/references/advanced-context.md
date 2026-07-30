@@ -17,6 +17,12 @@ to features across your application. The agent can pull from multiple repos to c
 calculations, table structures, or which features have event logging — grounding answers in the
 source code rather than guessing.
 
+> **Don't confuse this with Context Sync** (`references/github-sync.md`). Context Sync pushes your
+> *guide and workspace-context files* from a repo **into** Hex via the action-context-toolkit — the
+> repo is the source of the context assets. Reference repositories point Hex **at** a code repo so the
+> agent can *read your code* at query time. Both use GitHub; they solve different problems and can be
+> used together.
+
 **When to suggest it:**
 - The person says metric definitions or transformation logic live "in the code" (dbt models,
   application code, event-tracking code) rather than in descriptions.
