@@ -157,16 +157,38 @@ Direct the user to create and paste the token themselves — don't ask them to h
 
 ## Test locally before wiring CI (optional)
 
-If they have the Hex CLI, the same sync runs from a terminal — useful for a first dry run:
+If they have the Hex CLI, the same sync runs from a terminal — useful for a first dry run. It's a
+**two-step preview → publish** flow:
 
 ```bash
-hex auth login --token-from-env HEX_API_TOKEN   # or: hex auth login (interactive)
-hex context preview                             # stages changes, returns a test link
-hex context publish                             # publishes the staged preview
+hex auth login                          # interactive; or --token-from-env for non-interactive
+hex guide preview                       # reads hex_context.config.json at the git root; returns a
+                                        #   Preview ID + a preview link to test the new context
+hex guide publish <preview_id>          # deploy that preview to the workspace (add --draft for draft only)
 ```
 
-`--config-path <path>` points at a non-default config location. This is the same engine the Action
-uses; most teams let CI do it and only reach for the CLI to debug.
+Run `hex guide preview` from the repo root and it auto-discovers `hex_context.config.json`; pass
+`--config-path <path>` for a non-default location, or list files explicitly
+(`hex guide preview hex.md guides/*.md`) to preview a subset. Pruning is on by default when no files
+are listed. This is the same engine the Action uses — most teams let CI do it and only reach for the
+CLI to debug or to run the one-time takeover below.
+
+## Taking over context you authored in the Hex UI
+
+If a guide or the workspace context (`hex.md`) was **authored in the Hex UI**, the sync won't silently
+overwrite it — you'll get an error like *"Cannot overwrite a Hex authored guide with an API authored
+guide."* This is the exact moment a team moves from authoring-in-Hex to context-as-code. Take
+ownership once, then the repo is the source of truth:
+
+```bash
+hex guide preview --force               # take over UI-authored guides that the config now manages
+hex guide publish <preview_id>
+```
+
+After the takeover, those assets are repo-owned and read-only in Hex. (Alternatively, delete the
+UI-authored copy in Context Studio first, then let the normal sync create it from the repo.) If the
+GitHub Action reports the same "cannot overwrite" error on first run, do this one-time CLI takeover —
+or clear the UI copies — then let the Action own them going forward.
 
 ---
 
