@@ -9,10 +9,13 @@ Don't feel you need all of this before starting — the agent will ask for what 
 infer the rest, flagging assumptions.
 
 ## About your team & stack
-- How big is the data team, and who would own context work? (analytics engineers, analysts, admins)
+- How big is your data team, and who would own context work? (analytics engineers, analysts, admins)
 - What warehouse are you on? (Snowflake, BigQuery, Databricks, Redshift, Postgres…)
 - Do you use dbt or another transformation layer?
 - Do you already have a semantic layer? (Cube, dbt MetricFlow, Snowflake Semantic Views, LookML…)
+- **Are you investing heavily in semantic models and want the agent to use them first — only dropping
+  into raw SQL with your approval?** If yes, the authoring approach shifts to *semantic-first* (a
+  workspace-wide policy in `hex.md` + slimmer, model-routing guides).
 - What Hex plan and seats do you have? (Threads needs Team/Enterprise; users need Admin/Manager/
   Editor/Explorer — Viewers/Guests can't use it)
 
@@ -46,11 +49,6 @@ infer the rest, flagging assumptions.
   internal tool you host behind an MCP endpoint?
 - Any governance constraints on letting the agent call external tools? (Each tool call requires
   in-conversation approval; External Apps don't work from CLI/API/headless sessions.)
-
-## Rollout situation (if you want a plan)
-- Who are 5–10 candidate pilot users? Mix of technical ability, vocal, real questions to ask?
-- Is there a Slack channel or space for feedback?
-- Any deadline or event you're rolling toward?
 
 ---
 

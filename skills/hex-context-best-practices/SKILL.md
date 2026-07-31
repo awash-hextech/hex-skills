@@ -1,106 +1,147 @@
 ---
 name: hex-context-best-practices
 description: >
-  Use this skill whenever someone is setting up, improving, or planning a rollout of agentic
-  analytics in Hex — especially Threads, the Notebook Agent, or the Modeling Agent. Triggers on:
-  "context strategy", "context engineering", "set up Threads", "workspace guide", "warehouse
-  descriptions", "endorse tables", "semantic model", "my agent gave the wrong answer", "roll out
-  self-service analytics", "how do I make Hex AI more accurate", "Hex Context Studio". Always use
-  this skill for any task about making Hex's agents trustworthy or scaling them to business users —
-  even if the request is phrased casually like "help me get my data team using AI" or "why does
-  Threads keep picking the wrong table". This skill both advises on strategy AND drafts the actual
-  context assets (workspace guides, descriptions, semantic models) and rollout plans.
+  Use when you're authoring, auditing, or improving the context that makes Hex's AI agents (Threads,
+  the Notebook Agent, the Modeling Agent) accurate — and managing that context as files in a Git repo
+  that syncs to Hex. Triggers on: "context strategy", "context engineering", "set up Threads context",
+  "workspace guide", "warehouse descriptions", "endorse tables", "semantic model", "my agent gave the
+  wrong answer", "audit my Hex context", "improve agent accuracy", "how do I make Hex AI more
+  accurate", "Hex Context Studio", "context suggestions". Use it for any task about making Hex's agents
+  trustworthy through better context — even when phrased casually like "help me get my data team using
+  AI" or "why does Threads keep picking the wrong table". It drafts and edits the actual context assets
+  (workspace context, guides, descriptions, semantic models) as repo files and opens a PR to sync them.
 ---
 
-# Hex Context Strategy
+# Hex Context Authoring & Audit
 
-Help a data team build a **context strategy** for Hex's agents and roll it out so business users can
-self-serve trustworthy answers. This skill does two jobs: (1) advise on and **draft** the four
-context assets, and (2) produce a **phased rollout plan** tailored to the team's situation.
+Use this to **author and audit the context** that makes Hex's agents give trustworthy answers. Context
+lives as files in a **Git repo** and syncs to Hex via a GitHub Action; this skill drafts and edits
+those files and opens a PR.
 
 The single most important idea: **agents are only as good as the context you give them, and context
-compounds.** It does not need to be perfect on day one. Start with what exists, scope to one use
-case, and improve every loop.
+compounds.** It doesn't need to be perfect on day one. Start with what you have, scope to one use case,
+improve every loop.
+
+**How context reaches Hex — the loop this skill drives:**
+
+```
+author/edit files in the repo  →  open a PR  →  you merge  →  GitHub Action syncs to Hex
+```
+
+`hex.md` at the repo root is the **workspace context** (always-on, every prompt). **Every other `.md`
+is a guide** (retrieved when relevant). Synced files are read-only in Hex — the repo is the source of
+truth. This skill never publishes via the CLI or by pasting into the UI; it produces file changes and
+a PR, and your merge + the Action do the rest. Full mechanism: `references/github-sync.md`.
 
 ---
 
-## How to use this skill
+## Step 0 — Where are you starting? (do this first)
 
-This skill has two specialists. Figure out which the person needs and route accordingly. They will
-often need both, usually in this order: build context first, then plan the rollout.
+Before drafting anything, work out where your context stands today. A couple of quick questions is
+enough — infer the rest, don't interrogate:
 
-| If the person wants to… | Use |
-| --- | --- |
-| Decide what context to build, write workspace guides / descriptions / semantic models, or fix a wrong agent answer | **`agents/context-architect.md`** |
-| Plan how to introduce Threads to their team and scale it in phases | **`agents/rollout-planner.md`** |
+- Do you already have Hex context set up — a `hex.md`, guides, endorsed tables?
+- Is it already in a **Git repo that syncs to Hex** (the Action), authored in the Hex UI, or not
+  really anywhere yet?
+- Are Context Studio **Suggestions** piling up, or is Threads giving wrong answers you can point to?
 
-**Spawning the specialist:**
-- In Claude Code or Codex with subagent support, invoke the matching file in `agents/` as a subagent.
-- In Claude.ai or any environment without subagents, just **read the matching `agents/` file inline**
-  and follow it. The files are written to work either way.
+That routes you to one of two modes. Both use the same authoring engine
+(`agents/context-architect.md`) and the same asset mental model below.
 
-**Before doing detailed work, gather context about their setup.** Both specialists lean on
-`references/intake.md` — a short questionnaire the person can answer (or attach docs to) so the
-output fits their actual warehouse, team, and use case. Don't interrogate; ask for what you need,
-infer the rest, and note assumptions.
+### Mode A — Bootstrap (0 → 1)
+*You have little or no context, or nothing version-controlled yet.*
+
+1. **Endorse & exclude first (in Hex) — highest-leverage, do before drafting.** Endorse a few golden
+   tables for the use case and exclude the schemas/databases/junk tables the agent shouldn't touch.
+   This is a **Hex UI action** (Context Studio / data browser) — not a repo file, not the CLI. It
+   defines the approved menu the agent pulls from; your guides then reference the endorsed tables.
+2. **Stand up the context repo** (if you don't have one): `hex.md` for workspace context, a `guides/`
+   folder, `hex_context.config.json`, and the sync Action. Setup: `references/github-sync.md`.
+3. **Draft the first assets** — workspace context + one domain guide — scoped to a single use case.
+   When content must reference real tables/columns, have the **Hex agent draft it** (it can see your
+   warehouse; you can't from the repo) using the prompt in `hex-guides/guide-writing-guide.md`.
+4. **Open the PR.** Review the preview, merge, and the Action syncs.
+
+### Mode B — Improve from Suggestions (existing pipeline)
+*You already have context live; Hex is now generating Suggestions from real usage.*
+
+This is the ongoing improvement loop (full detail in `references/ask-hex.md`):
+
+0. **Check the repo has `hex.md` first.** If your workspace context isn't in the repo, it's likely
+   UI-authored and uncommitted — flag it and bring it under version control before anything else.
+   Guides usually depend on its rules (a semantic-first policy, SQL guardrails), so a missing `hex.md`
+   is the most common half-migrated state.
+1. **Pull the signal.** `hex suggestion list` (or Context Studio). **None yet?** Normal — ask for the
+   repo URL and audit the files instead (there's no way to list live guides; the repo is source of
+   truth). The CLI pulls signal and drives the Hex agent to draft — it never publishes.
+2. **Organize into coherent PRs, grouped by domain/theme** — e.g. all revenue-guide fixes in one PR.
+   Draft each change with `agents/context-architect.md`, delegating data-grounded drafting to the Hex
+   agent (`hex thread`, or a Thread) since it can see the warehouse.
+3. **Route by target:** guide / workspace context (`hex.md`) / semantic model → repo files in the PR;
+   **warehouse descriptions and endorsements → apply in Hex directly** (they're not synced by the
+   context repo — say so, don't force them into a PR).
+4. **Merge → the Action syncs.** Then mark the handled suggestions done (`hex suggestion update`).
+
+**Publishing is always GitHub.** The skill produces file changes and opens a PR; your merge and the
+Action deploy. The CLI never publishes guides. (No repo yet? Paste one guide into Context Studio to
+smoke-test, then move it into the repo.)
+
+**Keep steps current.** Hex's UI changes. Before giving step-by-step UI instructions, fetch the
+relevant page from `references/hex-docs.md`.
+
+**Gather a little setup context.** `references/intake.md` is a short questionnaire (or attach docs) so
+the output fits your actual warehouse and use case. Ask for what you need, infer the rest, note assumptions.
 
 ---
 
-**Keep steps current.** Hex's UI changes. Before giving step-by-step instructions, fetch the relevant
-page from `references/hex-docs.md` so the steps are accurate.
+## The mental model (the four context assets)
 
-## The mental model (read this before either specialist)
-
-Hex's agents reference **four categories of context**. Each has one job. The skill of keeping each
-category focused on its job is **context engineering**. The categories sit on a spectrum from loose
-**guidance** to rigid **governance**:
+Hex's agents reference **four categories of context**. Each has one job. Keeping each category focused
+on its job is **context engineering**. They sit on a spectrum from loose **guidance** to rigid
+**governance**:
 
 1. **Endorsed & excluded statuses** — *your warehouse guardrails.* Mark schemas/tables/semantic
-   models as Approved/Trusted, or "Exclude from AI" for staging, test, and deprecated data. This is
-   the **fastest, highest-leverage** action — it defines the "approved menu" the agent can pull from.
-   Pair with **Endorsed Mode** (Settings → AI & agents): when enabled (the default), Explorer users
-   are restricted to endorsed assets only in Threads — no toggle, no escape hatch. Recommended for
-   self-serve rollouts where you want to guarantee business users only touch vetted data.
+   models as Approved/Trusted, or "Exclude from AI" for staging, test, and deprecated data. The
+   **fastest, highest-leverage** action — it defines the "approved menu" the agent pulls from. Pair
+   with **Endorsed Mode** (Settings → AI & agents): when enabled (the default), Explorer users are
+   restricted to endorsed assets only in Threads. Recommended for self-serve.
 2. **Warehouse descriptions** — *the foundational context.* Table and column descriptions. Answers
    "what does this column contain." Fundamental hygiene.
-3. **Workspace context & guides** — *teaching the agent your business.* **Workspace context** is one
-   file sent with every prompt (global truths); **guides** are a retrieved library, one per domain.
-   Both describe *when/how* to use data, not *what* it is. Anything that doesn't fit the other three.
+3. **Workspace context & guides** — *teaching the agent your business.* **Workspace context** (`hex.md`)
+   is one file sent with every prompt (global truths); **guides** are a retrieved library, one per
+   domain. Both describe *when/how* to use data, not *what* it is. Anything that doesn't fit the
+   other three.
 4. **Semantic models** — *the rigid rules.* YAML that codifies how tables join, how measures are
    calculated, what dimensions exist. For metrics that must be 100% correct every time.
 
-**Advanced sources (optional, later-stage):** on Team/Enterprise, two more sources extend the four —
-**reference repositories** (connect GitHub/GitLab so the agent reasons over your code: metric logic,
-table structures, event logging) and **External Apps / MCP** (let the agent use Notion, Linear, or
-custom MCP tools). Surface these only when the person asks about code repos or MCP, already has repos
-connected to their AI tooling, or has matured past the basics. They're governed the same way as the
-core four — by a clear description. See `references/advanced-context.md`.
+**Which of these live in the repo:** **workspace context (`hex.md`), guides, and semantic models sync
+from the repo** via the Action — author and edit them as files. **Endorsements and warehouse
+descriptions are applied in Hex** (Context Studio / the warehouse), not synced from the context repo.
+So when a fix targets a description or endorsement, do it in Hex; only the first three become PRs.
 
-**The routing rule that keeps categories clean** (state this whenever someone is unsure where a
-piece of context belongs):
+**Advanced sources (optional, later-stage):** on Team/Enterprise, two more extend the four —
+**reference repositories** (connect GitHub/GitLab so the agent reasons over your code) and **External
+Apps / MCP** (Notion, Linear, or custom MCP tools). Bring these up only for code-repo/MCP questions or
+once you've matured past the basics. Governed the same way — by a clear description. See
+`references/advanced-context.md`.
+
+**The routing rule that keeps categories clean** (reach for it whenever you're unsure where a piece of
+context belongs):
 - Endorsing specific tables/schemas → endorse them in Hex. Banning bad tables → **exclude from AI**
   (not the workspace context — text bans are unreliable).
 - Defining what a column contains → warehouse description (not the workspace context).
 - Logic for joining two tables → semantic model if you have one, else warehouse descriptions on the
   joined columns.
-- Applies to every question → workspace context. Specific domain/question type → a guide.
+- Applies to every question → workspace context (`hex.md`). Specific domain/question type → a guide.
 - Metric formulas → a guide or semantic model (not the always-on context).
 
 **Where ownership tends to land:** warehouse descriptions and semantic models live closer to the
-warehouse (analytics engineering); endorsements and workspace guides live closer to Hex's UI
-(analysts/admins). There's no hard rule.
-
-**Observability closes the loop.** Context can't improve without visibility. Hex's **Context Studio**
-shows usage/adoption, lets you manage assets, surfaces trending questions and agent responses, and —
-via **Suggestions** — auto-generates concrete context fixes from conversation patterns and feedback.
-To find what to improve, ask Hex itself (the agent knows your warehouse and context); see
-`references/ask-hex.md` for in-product, MCP, and CLI ways to do that. Improvement is never "done" —
-frequent at first, tapering over time.
+warehouse (analytics engineering); endorsements and guides live closer to Hex's UI (analysts/admins).
+No hard rule.
 
 **Prioritization (the 30-minute start):** endorse a few golden tables and exclude junk → add
 descriptions to the most-queried endorsed tables/columns → write a workspace guide with 5–10 rules →
-add semantic models to codify key metrics. Always scope to a real business use case. Don't boil the
-ocean.
+add semantic models to codify key metrics. Always scope to a real business use case. Don't boil the ocean.
 
 ---
 
@@ -108,25 +149,34 @@ ocean.
 
 - **Positive guidance beats prohibitions.** "Always join on `customer_id` in the customer schema"
   works better than "don't use the wrong key."
-- **Scope to one use case** = a broad subject with 3–5 concrete business questions. That keeps the
-  work measurable and prevents context that's too broad to give signal.
-- **Show, don't just tell.** When drafting assets, produce the actual text/YAML the person can paste
-  into Hex, not a description of it.
+- **Scope to one use case** = a broad subject with 3–5 concrete business questions. Keeps the work
+  measurable and prevents context that's too broad to give signal.
+- **Show, don't just tell.** Produce the actual files (`hex.md`, `guides/<domain>.md`, semantic YAML)
+  in the repo, not a description of them.
+- **Two agents, two lanes.** You own the plumbing (repo layout, `hex_context.config.json`, the Action,
+  git/PR flow, Markdown structure) but can't see the warehouse from here. The **Hex agent**
+  (Threads/Notebook) can — so when content must reference real tables or columns, have it draft it,
+  then bring the draft into the repo. Never invent table/column names you can't verify.
+- **Run the CLI yourself.** When you delegate to the Hex agent, run `hex thread create` and poll
+  `hex thread get` for the result yourself — don't paste commands for the user to run.
 - **Map the accuracy bar per question.** Some answers can be "good enough"; others must be dead-on.
-  Tailor effort accordingly.
-- **Tribal knowledge → context.** Most early wins come from writing down what the team already knows.
+- **Tribal knowledge → context.** Most early wins come from writing down what your team already knows.
 
 ---
 
 ## Reference files
 
-- `agents/context-architect.md` — advise on + draft the four context assets; diagnose and fix wrong answers.
-- `agents/rollout-planner.md` — produce a phased, customized rollout plan.
-- `references/intake.md` — the questionnaire for customizing output to the person's setup.
-- `references/context-assets-deep-dive.md` — detailed patterns and full examples (workspace guide,
-  semantic model YAML, the fix framework). Read when the architect needs depth.
-- `references/advanced-context.md` — reference repositories (code) and External Apps / MCP. Read when
-  the person asks about repos or MCP, or already has code connected to their AI tooling.
+- `agents/context-architect.md` — the authoring & audit engine: decide what to build, draft/edit the
+  four assets, and diagnose + fix wrong answers.
+- `references/github-sync.md` — **how context reaches Hex.** Create the repo, `hex.md` + guides layout,
+  `hex_context.config.json`, the GitHub Action, token setup, and the PR → merge → sync loop.
+- `references/ask-hex.md` — the Mode B improvement loop: pull Suggestions via the CLI, organize them
+  into coherent PRs by domain, route by target, mark done. The CLI pulls signal and drives the Hex
+  agent to draft — it never publishes.
+- `references/intake.md` — the questionnaire for tailoring output to your setup.
+- `references/context-assets-deep-dive.md` — detailed patterns and full examples (workspace context,
+  guide, semantic model YAML, the fix framework). Read when you need depth.
+- `references/advanced-context.md` — reference repositories (code) and External Apps / MCP.
 - `references/hex-docs.md` — canonical Hex doc links. Fetch the relevant page before giving UI steps.
-- `references/ask-hex.md` — tiered ways (in-product / MCP / CLI) to get Hex's own signal on what
-  context to improve, including the `hex suggestion list` CLI loop.
+- `hex-guides/guide-writing-guide.md` — a guide you add to the workspace so the Hex agent can draft
+  data-grounded context that flows into the repo.

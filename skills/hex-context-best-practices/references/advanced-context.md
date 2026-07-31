@@ -1,10 +1,10 @@
 # Advanced Context — Reference Repositories & External Apps (MCP)
 
 Beyond the four core context assets, Hex offers two more advanced context sources. Treat these as
-**optional, later-stage** moves — surface them when the person asks about code repos / MCP, when they
-already have repos connected to their AI tooling, or once they've matured past the basics and want
-the agent to reason over code or reach into other systems. Don't push them on a team still doing the
-30-minute starter pass.
+**optional, later-stage** moves — reach for them when you're asking about code repos / MCP, already
+have repos connected to your AI tooling, or have matured past the basics and want the agent to reason
+over code or reach into other systems. Don't bother with them while you're still doing the 30-minute
+starter pass.
 
 Both require **Team or Enterprise** plans.
 
@@ -16,6 +16,12 @@ Connect git repositories so the agent has richer context on how your data is def
 to features across your application. The agent can pull from multiple repos to clarify metric
 calculations, table structures, or which features have event logging — grounding answers in the
 source code rather than guessing.
+
+> **Don't confuse this with Context Sync** (`references/github-sync.md`). Context Sync pushes your
+> *guide and workspace-context files* from a repo **into** Hex via the action-context-toolkit — the
+> repo is the source of the context assets. Reference repositories point Hex **at** a code repo so the
+> agent can *read your code* at query time. Both use GitHub; they solve different problems and can be
+> used together.
 
 **When to suggest it:**
 - The person says metric definitions or transformation logic live "in the code" (dbt models,
@@ -56,7 +62,7 @@ or call your own tools mid-conversation. **Currently in beta.**
 **When to suggest it:**
 - Context the agent needs lives in Notion/Confluence-style docs or a ticketing system, not the
   warehouse.
-- The team has built or hosts internal tools behind an MCP endpoint they'd want the agent to call.
+- You've built or host internal tools behind an MCP endpoint you'd want the agent to call.
 - They want the agent to take actions (create a ticket, fetch a doc) as part of an analysis loop.
 
 **How it works:**
