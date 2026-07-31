@@ -8,7 +8,7 @@ standard.
 
 | Skill | Description |
 |-------|-------------|
-| [hex-context-best-practices](skills/hex-context-best-practices/) | Build and roll out a context strategy for Hex's AI agents (Threads, Notebook Agent, Modeling Agent). Drafts context assets, plans phased rollouts, and diagnoses wrong answers. |
+| [hex-context-best-practices](skills/hex-context-best-practices/) | Build and refine context in Hex using the CLI and GitHub repos as your context sources. Drafts context assets, publish and sync to Hex, and diagnoses wrong answers. |
 
 ## Install
 
