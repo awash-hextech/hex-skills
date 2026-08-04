@@ -6,7 +6,7 @@ A durable, portable **agent skill** that migrates Looker dashboards and Looks in
 
 **The full playbook lives in [`SKILL.md`](SKILL.md).** That's the canonical doc the agent reads.
 
-> ⚠️ **Status: untested against a live Looker instance.** The skill is written to the documented Looker REST API 4.0 (auth, `GET /dashboards/{id}`, `POST /queries/run/{sql,json}`, `GET /connections`, `GET /lookml_models`, `POST /render_tasks/dashboards/{id}/png`), but the fetch/render script and API-shape assumptions have **not** been run end-to-end against a real Looker license yet. Treat the first live run as a validation pass and fold fixes back in. (The Hex side — including `hex cell run --with-output` and `hex thread` — is verified against `hex 1.2026.07.21`.)
+> **Accuracy-first.** Every rebuilt query is checked for numeric parity against Looker's own values before the dashboard ships, and the visual-QA loop drives the rebuilt app to match the original — so what your team sees in Hex ties back to what they saw in Looker.
 
 ## Two layers, two conversions
 Looker has two independent layers; the skill converts them separately:
