@@ -9,6 +9,8 @@ standard.
 | Skill | Description |
 |-------|-------------|
 | [hex-context-best-practices](skills/hex-context-best-practices/) | Build and refine context in Hex using the CLI and GitHub repos as your context sources. Drafts context assets, publish and sync to Hex, and diagnoses wrong answers. |
+| [looker-migration](skills/looker-migration/) | Migrate Looker dashboards/Looks into Hex. Translates LookML + Looker's generated SQL, lets Hex's notebook agent build a generative app on gated SQL cells, and verifies with a SQL-fidelity gate (numeric parity vs Looker) + a visual-QA loop. |
+| [tableau-migration](skills/tableau-migration/) | Migrate Tableau dashboards/workbooks into Hex. Parses the `.twb` into a migration brief, lets Hex's notebook agent build a generative app on gated SQL cells, and verifies with a SQL-fidelity gate + a visual-QA loop. |
 
 ## Install
 
