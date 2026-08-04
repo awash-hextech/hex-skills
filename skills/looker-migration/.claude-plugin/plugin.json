@@ -1,0 +1,12 @@
+{
+  "name": "looker-migration",
+  "version": "1.0.0",
+  "description": "Migrate Looker dashboards/Looks into Hex. This coding agent discovers content over the Looker REST API, translates LookML + Looker's generated SQL, and writes a migration brief; Hex's notebook agent builds a generative app on gated SQL cells; then it's verified with a SQL-fidelity gate (numeric parity against Looker's own values) and a visual-QA loop.",
+  "author": {
+    "name": "Rachel Herrera",
+    "url": "https://github.com/rherrera89"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "looker", "lookml", "migration", "dashboards", "analytics", "ai-agents"]
+}

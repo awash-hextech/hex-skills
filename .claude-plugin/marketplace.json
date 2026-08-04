@@ -14,6 +14,18 @@
       "source": "./skills/hex-context-best-practices",
       "description": "Advise on and draft Hex context assets (endorsements, descriptions, workspace context/guides, semantic models), plan a phased Threads rollout, and diagnose wrong agent answers.",
       "version": "1.0.0"
+    },
+    {
+      "name": "looker-migration",
+      "source": "./skills/looker-migration",
+      "description": "Migrate Looker dashboards/Looks into Hex: translate LookML + Looker's generated SQL, let Hex's notebook agent build a generative app on gated SQL cells, and verify with a SQL-fidelity gate (numeric parity vs Looker) + a visual-QA loop.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "tableau-migration",
+      "source": "./skills/tableau-migration",
+      "description": "Migrate Tableau dashboards/workbooks into Hex: parse the .twb into a migration brief, let Hex's notebook agent build a generative app on gated SQL cells, and verify with a SQL-fidelity gate + a visual-QA loop.",
+      "version": "1.0.0"
     }
   ]
 }

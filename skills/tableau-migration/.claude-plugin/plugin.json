@@ -1,0 +1,12 @@
+{
+  "name": "tableau-migration",
+  "version": "1.0.0",
+  "description": "Migrate Tableau dashboards/workbooks into Hex. This coding agent parses the .twb/.twbx and writes a migration brief + styling spec; Hex's notebook agent builds a generative app on a natively-gated SQL data layer; then it's verified with a SQL-fidelity gate and a visual-QA loop.",
+  "author": {
+    "name": "Rachel Herrera",
+    "url": "https://github.com/rherrera89"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "tableau", "twb", "migration", "dashboards", "analytics", "ai-agents"]
+}
