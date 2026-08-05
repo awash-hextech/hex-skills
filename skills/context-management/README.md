@@ -1,15 +1,16 @@
-# Hex Context Best Practices
+# Hex Context Management
 
-An Agent Skill that helps you **author and audit the context** that makes Hex's AI agents
-(Threads, the Notebook Agent, and the Modeling Agent) accurate. It drafts and edits the context assets
-as files in a Git repo, opens a PR, and diagnoses why an agent gave a wrong answer.
+An Agent Skill for **doing context management well in Hex** — building and maintaining the context
+that makes Hex's AI agents (Threads, the Notebook Agent, and the Modeling Agent) accurate. It drafts
+and edits the context assets as files in a Git repo, opens a PR, and diagnoses why an agent gave a
+wrong answer.
 
 It works across Claude Code, Claude.ai, OpenAI Codex, and other agents that read Markdown skills.
 
 ## What's inside
 
 ```
-hex-context-best-practices/
+context-management/
 ├── SKILL.md                          # orchestrator — start here (Step 0 routes to a mode)
 ├── agents/
 │   └── context-architect.md          # the authoring & audit engine; fix wrong answers
@@ -52,7 +53,7 @@ Setup lives in [`references/github-sync.md`](references/github-sync.md).
 
 ```
 /plugin marketplace add hex-inc/hex-skills
-/plugin install hex-context-best-practices@hex-skills
+/plugin install context-management@hex-skills
 ```
 
 Then just ask, e.g. *"help me build a context strategy for our revenue KPIs in Hex."*
@@ -65,12 +66,12 @@ npx skills add hex-inc/hex-skills
 
 ### OpenAI Codex
 
-Clone the repo and ask Codex to follow `skills/hex-context-best-practices/SKILL.md` (or see
+Clone the repo and ask Codex to follow `skills/context-management/SKILL.md` (or see
 [`AGENTS.md`](../../AGENTS.md) at the repo root).
 
 ### Claude.ai (no code)
 
-Download `hex-context-best-practices.skill` from the
+Download `context-management.skill` from the
 [latest release](https://github.com/hex-inc/hex-skills/releases) and upload it in
 Settings → Capabilities → Skills (paid plans).
 
@@ -78,7 +79,7 @@ Settings → Capabilities → Skills (paid plans).
 
 ```
 git clone https://github.com/hex-inc/hex-skills
-cp -r hex-skills/skills/hex-context-best-practices ~/.claude/skills/
+cp -r hex-skills/skills/context-management ~/.claude/skills/
 ```
 
 ## How it works

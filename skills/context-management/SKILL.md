@@ -1,15 +1,16 @@
 ---
-name: hex-context-best-practices
+name: context-management
 description: >
-  Use when you're authoring, auditing, or improving the context that makes Hex's AI agents (Threads,
-  the Notebook Agent, the Modeling Agent) accurate — and managing that context as files in a Git repo
-  that syncs to Hex. Triggers on: "context strategy", "context engineering", "set up Threads context",
-  "workspace guide", "warehouse descriptions", "endorse tables", "semantic model", "my agent gave the
-  wrong answer", "audit my Hex context", "improve agent accuracy", "how do I make Hex AI more
-  accurate", "Hex Context Studio", "context suggestions". Use it for any task about making Hex's agents
-  trustworthy through better context — even when phrased casually like "help me get my data team using
-  AI" or "why does Threads keep picking the wrong table". It drafts and edits the actual context assets
-  (workspace context, guides, descriptions, semantic models) as repo files and opens a PR to sync them.
+  Use for managing the context that makes Hex's AI agents (Threads, the Notebook Agent, the Modeling
+  Agent) accurate — authoring, auditing, and improving it, and keeping it as files in a Git repo that
+  syncs to Hex. Triggers on: "context management", "manage my Hex context", "context strategy",
+  "context engineering", "set up Threads context", "workspace guide", "warehouse descriptions",
+  "endorse tables", "semantic model", "my agent gave the wrong answer", "audit my Hex context",
+  "improve agent accuracy", "how do I make Hex AI more accurate", "Hex Context Studio", "context
+  suggestions". Use it for any task about making Hex's agents trustworthy through better context — even
+  when phrased casually like "help me get my data team using AI" or "why does Threads keep picking the
+  wrong table". It drafts and edits the actual context assets (workspace context, guides, descriptions,
+  semantic models) as repo files and opens a PR to sync them.
 ---
 
 # Hex Context Authoring & Audit
