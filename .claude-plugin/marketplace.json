@@ -10,9 +10,9 @@
   },
   "plugins": [
     {
-      "name": "hex-context-best-practices",
-      "source": "./skills/hex-context-best-practices",
-      "description": "Advise on and draft Hex context assets (endorsements, descriptions, workspace context/guides, semantic models), plan a phased Threads rollout, and diagnose wrong agent answers.",
+      "name": "context-management",
+      "source": "./skills/context-management",
+      "description": "Do context management well in Hex: build and maintain the context that makes Hex's AI agents accurate (workspace context, guides, descriptions, endorsements, semantic models), managed as code, plan a phased Threads rollout, and diagnose wrong agent answers.",
       "version": "1.0.0"
     },
     {

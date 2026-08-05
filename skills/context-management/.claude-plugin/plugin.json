@@ -1,0 +1,12 @@
+{
+  "name": "context-management",
+  "version": "2.0.0",
+  "description": "Do context management well in Hex: build and maintain the context that makes Hex's AI agents (Threads, Notebook Agent, Modeling Agent) accurate — workspace context, guides, descriptions, endorsements, and semantic models — managed as code in a Git repo that syncs to Hex, with wrong-answer diagnosis.",
+  "author": {
+    "name": "Rachel Herrera",
+    "url": "https://github.com/rherrera89"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "context-management", "context-engineering", "threads", "analytics", "ai-agents"]
+}
