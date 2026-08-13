@@ -11,12 +11,15 @@ It works across Claude Code, Claude.ai, OpenAI Codex, and other agents that read
 
 ```
 context-management/
-├── SKILL.md                          # orchestrator — start here (Step 0 routes to a mode)
+├── SKILL.md                          # dispatcher — orient once, then route to a task
+├── workflows/
+│   ├── bootstrap.md                  # 0 → 1: stand up context for a use case
+│   └── improve-loop.md               # ongoing: signal → draft → preview → eval-gate → publish
 ├── agents/
 │   └── context-architect.md          # the authoring & audit engine; fix wrong answers
 ├── references/
-│   ├── github-sync.md                # create the repo, config, the GitHub Action — how context ships
-│   ├── ask-hex.md                    # improvement loop: pull Suggestions via CLI → coherent PRs
+│   ├── github-sync.md                # repo, config, the Action + the CLI publish path
+│   ├── evals-and-preview-loop.md     # measure with eval suites; test in a hex context preview fork
 │   ├── intake.md                     # questionnaire to customize to a setup
 │   ├── context-assets-deep-dive.md   # workspace context/guides + semantic YAML + semantic-first examples
 │   ├── advanced-context.md           # reference repositories + External Apps / MCP
@@ -27,17 +30,21 @@ context-management/
 
 ## The model: context as code
 
-Guides and workspace context live as Markdown files in a **Git repo** and sync into Hex through the
+Guides, workspace context, and semantic models can live as Markdown/YAML files in a **Git repo** and
+sync into Hex through the
 [`hex-inc/action-context-toolkit`](https://github.com/hex-inc/action-context-toolkit) GitHub Action.
 `hex.md` is the workspace context; every other `.md` is a guide. The loop is **edit files → open a PR
 → merge → the Action syncs to Hex**; synced resources are read-only in Hex, so the repo is the source
-of truth. **Publishing is always GitHub** — the skill produces file changes and a PR, never publishing
-via CLI or the UI.
+of truth. There are **two publish paths** — **GitHub** (recommended for versioned, reviewed changes)
+and the **Hex CLI** (`hex context preview` to test, `hex context publish` to deploy; faster,
+repo-optional, but skips PR review). Route each asset by where it lives — Git, Hex UI, or a mix — and
+don't assume GitHub.
 
-Once context is live, Hex generates **Suggestions** from real usage. The skill uses the Hex **CLI** to
-*pull* those suggestions and to *ask the Hex agent to draft* data-grounded content — then organizes
-them into coherent PRs by domain. (The CLI is for signal and drafting; it never publishes.) Warehouse
-descriptions and endorsements are applied in Hex directly, not synced from the repo.
+Once context is live, Hex generates **Suggestions** from real usage, and you can **measure** context
+with eval suites (`hex eval run`). The skill uses the Hex **CLI** to *pull* suggestions, *ask the Hex
+agent to draft* data-grounded content, *test* a change in a `hex context preview` fork, and publish —
+then organizes durable changes into coherent PRs by domain. Warehouse descriptions and endorsements are
+always applied in Hex directly, never synced from the repo.
 
 Two agents split the work:
 - **A coding agent with this skill** owns the plumbing — repo layout, `hex_context.config.json`, the
@@ -84,16 +91,20 @@ cp -r hex-skills/skills/context-management ~/.claude/skills/
 
 ## How it works
 
-1. The agent reads `SKILL.md`, learns the four-context-asset mental model, and runs **Step 0** to place
-   you: **Mode A — bootstrap (0→1)** if you have little/no context, or **Mode B — audit & author-helper**
-   if you already have a pipeline.
-2. It gathers a little context via `references/intake.md` (or mines docs you attach).
-3. **Context Architect** writes/edits the assets as repo files (`hex.md`, `guides/<domain>.md`, semantic
-   YAML) + a test plan, scoped to one use case — delegating data-grounded drafting to the Hex agent. In
-   Mode B it starts from Context Studio Suggestions (`references/ask-hex.md`).
-4. It wires up (or fits into) `hex_context.config.json` and the GitHub Action, then opens a PR
-   (`references/github-sync.md`). You merge; the Action syncs.
-5. You iterate — context compounds, and each new use case or fix is another PR.
+1. The agent reads `SKILL.md`, learns the four-context-asset mental model, and **orients once** —
+   detecting your setup (`hex connection list`, `hex context semantic-project list`,
+   `hex_context.config.json`) and remembering the rest in a short `hex_context.profile.md`, so returning
+   users skip setup and go straight to their task.
+2. It **routes to the workflow you need** — `workflows/bootstrap.md` to stand up context from scratch,
+   or `workflows/improve-loop.md` to improve live context from suggestions and evals. It doesn't run the
+   whole flow every time.
+3. **Context Architect** writes/edits the assets (`hex.md`, `guides/<domain>.md`, semantic YAML) scoped
+   to one use case — delegating data-grounded drafting to the Hex agent. The improve loop starts from
+   Context Studio Suggestions and eval results.
+4. It **tests before publishing** — forks the change with `hex context preview` and re-runs the eval
+   suite against it (`references/evals-and-preview-loop.md`) — then publishes via a PR (the Action syncs,
+   `references/github-sync.md`) or `hex context publish`, routed by where each asset lives.
+5. You iterate — context compounds, and each new use case or fix is another measured change.
 
 Heavily invested in semantic models? Answer yes to the semantic-first intake question and the whole
 approach shifts to model-first routing (a `hex.md` policy + slim, model-routing guides) — see
