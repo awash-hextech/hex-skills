@@ -33,7 +33,7 @@ Looker will hand you both the **generated SQL** (`looker_fetch.py sql` → `POST
 ### Any agent CLI (cross-tool, Agent Skills standard)
 
 ```
-npx skills add hex-inc/hex-skills
+npx skills add hex-inc/hex-skills --skill looker-migration
 ```
 
 ### OpenAI Codex

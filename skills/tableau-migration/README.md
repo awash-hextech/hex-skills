@@ -22,7 +22,7 @@ A durable, portable **agent skill** that migrates Tableau dashboards into Hex by
 ### Any agent CLI (cross-tool, Agent Skills standard)
 
 ```
-npx skills add hex-inc/hex-skills
+npx skills add hex-inc/hex-skills --skill tableau-migration
 ```
 
 ### OpenAI Codex

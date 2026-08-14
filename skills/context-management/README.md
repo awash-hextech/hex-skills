@@ -68,7 +68,7 @@ Then just ask, e.g. *"help me build a context strategy for our revenue KPIs in H
 ### Any agent CLI (cross-tool, Agent Skills standard)
 
 ```
-npx skills add hex-inc/hex-skills
+npx skills add hex-inc/hex-skills --skill context-management
 ```
 
 ### OpenAI Codex
