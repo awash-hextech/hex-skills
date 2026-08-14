@@ -42,24 +42,11 @@ hex eval list                           # recent runs
     `{sql, dataConnectionId, timeoutSeconds}` computed at grade time.
 - **Attempts pass logic:** 1 → must pass; 2 → ≥1 passes; 3 → ≥2 pass. Use ≥2 to smoke out variance.
 
-**Design two kinds of cases** (baseline vs hill-climbing): baselines are answers you expect to pass
-every time (they guard against regressions); hill-climbing cases are harder/aspirational ones you're
-trying to move — they're your to-do list, and it's fine for them to fail today.
-
-### Rules that save you pain (all learned the hard way)
-
-- **Numeric ground truth as SQL, not a hard-coded number.** Put the definition in `target.sql` so it
-  recomputes each run and never goes stale — and so it *reproduces the semantic model's definition*
-  (e.g. revenue = `SUM(sale_price)` filtered to completed orders), not a raw-table approximation.
-- **`numeric_value` extracts the *headline* number.** It's unreliable at pulling one cell out of a
-  multi-row answer — a "break down orders by status" answer made it grab the **998 total** instead of
-  the **270 shipped**, false-failing a correct answer. Grade multi-row/breakdown answers with a
-  **judge**, and reserve `numeric_value` for single-number questions.
-- **Don't trust `warnOnly` to rescue a case.** Observed a `warnOnly: true` rubric still fail its case.
-  If a rubric shouldn't decide pass/fail, prefer removing it over relying on `warnOnly`.
-- **Pin `modelSelection` (model + effort).** Unpinned, attempts ran on *different models* — not
-  reproducible. Pin it so before/after runs are comparable. Lower effort also completes more reliably
-  for simple analytics questions.
+**Authoring cases and rubrics lives in `agents/eval-engineer.md`** — the baseline-vs-hill-climb
+lifecycle, how to write rubrics, the anatomy of a case, where cases come from (threads → suggestions →
+converting an existing suite), and the authoring gotchas. This file is the **mechanics**: run, read the
+result honestly, fork a preview, publish. Delegate the writing to the subagent; use the sections below
+to run and gate what it produces.
 
 ---
 
