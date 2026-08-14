@@ -3,12 +3,14 @@ name: context-management
 description: >
   Use to build, manage, and improve the context that makes Hex's AI agents (Threads, the Notebook
   Agent, the Modeling Agent) accurate — endorsements & exclusions, warehouse descriptions, workspace
-  context & guides, and semantic models. Covers standing context up from scratch, measuring it with
-  eval suites, reviewing Context Studio Suggestions, testing a change in a preview, and publishing via
-  GitHub sync or the Hex CLI. Triggers on: "context management", "manage my Hex context", "context
+  context & guides, and semantic models. Covers standing context up from scratch, measuring it with a
+  dedicated eval engine (authoring and running eval suites, sourcing cases from real usage, gating
+  changes in a preview), reviewing Context Studio Suggestions, and publishing via GitHub sync or the
+  Hex CLI. Triggers on: "context management", "manage my Hex context", "context
   strategy", "context engineering", "set up Threads context", "workspace guide", "warehouse
   descriptions", "endorse tables", "semantic model", "my agent gave the wrong answer", "audit my Hex
-  context", "improve agent accuracy", "eval my context", "test context changes", "hex context preview",
+  context", "improve agent accuracy", "eval my context", "write Hex evals", "eval rubric",
+  "baseline vs hill-climbing", "convert my evals", "test context changes", "hex context preview",
   "context suggestions", "Hex Context Studio". Use for any task about making Hex's agents trustworthy
   through better context — even phrased casually like "help me get my data team using AI" or "why does
   Threads keep picking the wrong table". Routes to the specific workflow rather than running the full

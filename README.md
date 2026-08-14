@@ -8,7 +8,7 @@ standard.
 
 | Skill | Description |
 |-------|-------------|
-| [context-management](skills/context-management/) | Do context management well in Hex — build and maintain the context that makes Hex's AI agents accurate (workspace context, guides, descriptions, endorsements, semantic models), managed as code and synced to Hex, with wrong-answer diagnosis. |
+| [context-management](skills/context-management/) | Build and improve the context that makes Hex's AI agents accurate (endorsements, descriptions, workspace context, guides, semantic models), then measure it with a dedicated eval engine — authoring and running eval suites, sourcing cases from real usage, and gating changes in a preview — managed as code and synced to Hex. |
 | [looker-migration](skills/looker-migration/) | Migrate Looker dashboards/Looks into Hex. Translates LookML + Looker's generated SQL, lets Hex's notebook agent build a generative app on gated SQL cells, and verifies with a SQL-fidelity gate (numeric parity vs Looker) + a visual-QA loop. |
 | [tableau-migration](skills/tableau-migration/) | Migrate Tableau dashboards/workbooks into Hex. Parses the `.twb` into a migration brief, lets Hex's notebook agent build a generative app on gated SQL cells, and verifies with a SQL-fidelity gate + a visual-QA loop. |
 
