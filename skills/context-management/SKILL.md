@@ -79,7 +79,8 @@ Route to the one file that matches. Don't load the others.
 |---|---|
 | Stand up context from scratch (0 → 1) | `workflows/bootstrap.md` |
 | Improve live context — suggestions, a failing eval, a wrong answer | `workflows/improve-loop.md` |
-| Set up or run **evals**, or test a change in a preview | `references/evals-and-preview-loop.md` |
+| Write, run, or maintain **evals** (author cases + rubrics, convert an existing suite) | `agents/eval-engineer.md` |
+| Eval/preview **mechanics** — run, read results, fork a preview | `references/evals-and-preview-loop.md` |
 | Diagnose a specific wrong answer / author one asset well | `agents/context-architect.md` |
 | Set up or understand repo → Hex **sync / publishing** | `references/github-sync.md` |
 | Extend to code repos or MCP tools (Team/Enterprise) | `references/advanced-context.md` |
@@ -141,9 +142,12 @@ use case; don't boil the ocean.
   first guide + workspace context, preview, publish, lock in a baseline eval.
 - `workflows/improve-loop.md` — **the ongoing loop.** Signal (suggestions + evals) → draft → preview →
   eval-gate → publish → close out. Route each change by where the asset lives.
-- `references/evals-and-preview-loop.md` — measure context with **eval suites** and test in a
-  **`hex context preview`** fork (`hex eval run --preview-id`). Read results honestly (errored ≠
-  agent-failed). Gotcha: use `hex context preview`, not the old `hex guide preview`.
+- `agents/eval-engineer.md` — the **measurement engine.** Author eval cases + rubrics (baseline vs
+  hill-climb lifecycle, rubric craft, sourcing from real usage, converting an existing suite), run the
+  suite, and hand back the verdict rather than the tables.
+- `references/evals-and-preview-loop.md` — eval/preview **mechanics**: run, read results honestly
+  (errored ≠ agent-failed), fork a **`hex context preview`** (`hex eval run --preview-id`), publish.
+  Gotcha: use `hex context preview`, not the old `hex guide preview`.
 - `agents/context-architect.md` — the authoring & diagnosis engine: draft/edit the four assets, and
   fix a specific wrong answer.
 - `references/github-sync.md` — repo → Hex sync + publishing: `hex_context.config.json`, the Action,
