@@ -12,8 +12,8 @@
     {
       "name": "context-management",
       "source": "./skills/context-management",
-      "description": "Do context management well in Hex: build and maintain the context that makes Hex's AI agents accurate (workspace context, guides, descriptions, endorsements, semantic models), managed as code, plan a phased Threads rollout, and diagnose wrong agent answers.",
-      "version": "1.0.0"
+      "description": "Build, manage, and improve the context that makes Hex's AI agents (Threads, Notebook Agent, Modeling Agent) accurate — endorsements, warehouse descriptions, workspace context, guides, and semantic models. Measure context with eval suites, review Context Studio suggestions, test changes in a hex context preview, and publish via GitHub sync or the Hex CLI. Routes to the specific workflow instead of running full setup each time.",
+      "version": "2.1.0"
     },
     {
       "name": "looker-migration",

@@ -1,19 +1,23 @@
-# GitHub Sync — context as code (the default path)
+# GitHub Sync — context as code (the recommended path)
 
-Hex context (guides, workspace context, semantic projects) should live as **Markdown/YAML files in a
+Hex context (guides, workspace context, semantic projects) **can** live as **Markdown/YAML files in a
 Git repo** and sync into Hex automatically via a GitHub Action. The repo is the source of truth;
 synced resources are **read-only in Hex**, so no one can drift the live copy out from under version
-control.
-
-This is the only publish path this skill uses. The loop is:
+control. This is the recommended path for anything you want versioned and reviewed. The loop is:
 
 ```
 author/edit files in the repo  →  open a PR  →  user merges  →  the GitHub Action syncs to Hex
 ```
 
-The skill **never publishes via the Hex CLI or by pasting into the UI** — it produces file changes and
-a PR; your merge and the Action do the deploy. Fetch the live pages in `references/hex-docs.md`
-before giving UI steps — Hex's UI changes. Authoritative doc: **Context Sync** (linked there).
+**It is not the only publish path, though.** The Hex CLI can also publish:
+`hex context preview` forks the current context (guides + semantic models — and it carries live
+Hex-authored semantic models into the fork), and `hex context publish <previewId | ->` deploys it.
+That path is faster and repo-optional but **bypasses PR review**, so reach for it for fast iteration or
+for context that's managed in Hex rather than a repo. Route each asset by where it lives — Git, Hex UI,
+or a mix. To measure and gate a change before publishing, see `references/evals-and-preview-loop.md`.
+
+Fetch the live pages in `references/hex-docs.md` before giving UI steps — Hex's UI changes.
+Authoritative doc: **Context Sync** (linked there).
 
 If you don't have a context repo yet, **Step 1 is to create one** (below). If you already have a repo
 wired to the Action, skip setup and go straight to the workflow loop at the bottom.
@@ -35,8 +39,9 @@ guess — have the **Hex agent draft it** (it can introspect the warehouse and r
 that draft back into the repo, structure it, and sync it. Ask it interactively in a Thread, or drive
 it from the CLI: `hex thread create "<prompt>"` then `hex thread continue <id> "<prompt>"`. See
 `hex-guides/guide-writing-guide.md` for the prompt pattern. The coding agent owns the plumbing; the
-Hex agent owns the data grounding. (The CLI here only *drafts and pulls signal* — publishing is still
-the PR + Action.)
+Hex agent owns the data grounding. (In this GitHub-sync path, publishing happens on merge via the
+Action; the CLI can also publish directly with `hex context publish` when you're not going through a
+PR.)
 
 ---
 

@@ -25,9 +25,10 @@ attached docs), or delegate the drafting to the **Hex agent**, which can introsp
 the prompt in `hex-guides/guide-writing-guide.md` in a Thread, then bring the data-grounded draft back
 and do the repo/config/PR mechanics. You own the plumbing; Hex owns the data grounding.
 
-**Assume a Git repo.** Context lives as files in a repo and syncs to Hex via the GitHub Action — that's
-the default destination for everything you draft, not a copy-paste into the UI. See
-`references/github-sync.md`.
+**Know where each asset lives before you draft.** Guides, `hex.md`, and semantic models can be
+repo-managed (synced via the GitHub Action) or authored in the Hex UI — the orientation step in
+`SKILL.md` establishes which. Default to the repo for anything versioned; route Hex-authored assets to
+Context Studio / `hex context publish`. See `references/github-sync.md`.
 
 Work the assets in leverage order. You rarely need all of them for one use case.
 
@@ -172,22 +173,26 @@ Setup, roles, constraints: `references/advanced-context.md`.
 
 ---
 
-## Find the gaps: Suggestions → coherent PRs (the Mode B loop)
+## Find the gaps: Suggestions → coherent PRs (the improve loop)
 
 Don't guess what to fix — Hex knows your warehouse and context, and you don't. Pull its **Suggestions**
-and organize them into reviewable PRs. Full loop with commands in `references/ask-hex.md`; the shape:
+and organize them into reviewable PRs. Full loop with commands in `workflows/improve-loop.md`; the shape:
 
 1. **Pull** — `hex suggestion list` or Context Studio → **Suggestions**. **Empty is normal** — then ask
    for the repo URL and audit the files (no CLI/API lists live guides; the repo is source of truth).
-   The CLI pulls signal and drives the Hex agent to draft — never publishes.
+   The CLI pulls signal, drives the Hex agent to draft, and can also test (`hex context preview`) and
+   publish (`hex context publish`) — route publishing by where the asset lives (see below).
 2. **Group by domain/theme** — cluster related suggestions into one PR each (all revenue fixes
    together), not one PR per suggestion. Propose the grouping and adjust as needed.
 3. **Draft each change** here (using the asset sections above). When it must reference real data,
    delegate to the Hex agent — `hex thread create "<prompt>"` or a Thread — since it sees the warehouse.
-4. **Route by target:** guide / workspace context (`hex.md`) / semantic model → repo files in the PR;
-   **warehouse descriptions and endorsements → apply in Hex directly** (Context Studio / warehouse) —
-   they're not synced by the context repo, so flag it rather than putting them in a PR.
-5. **Merge → the Action syncs**, then `hex suggestion update <id> --status completed`.
+4. **Route by where the asset lives:** repo-managed guide / `hex.md` / semantic model → repo files in a
+   PR; Hex-authored guide / semantic model → Context Studio or `hex context publish`; **warehouse
+   descriptions and endorsements → apply in Hex directly** (Context Studio / warehouse) — never synced
+   by the context repo, so flag rather than PR them.
+5. **Test, then publish.** Fork with `hex context preview` and re-run evals against it
+   (`hex eval run --preview-id`, see `references/evals-and-preview-loop.md`); then merge the PR (the
+   Action syncs) or `hex context publish`. Finally `hex suggestion update <id> --status completed`.
 
 If you use the Hex MCP server, you can ask the Hex agent the same drafting questions from your own
 tool (MCP can't pull Suggestions — those stay in Context Studio / the CLI).

@@ -40,4 +40,4 @@ confirm against the linked doc.
 - Connecting code repos → reference-repositories
 - Connecting Notion/Linear/custom tools → external-apps
 - Reviewing usage and trending questions → context-studio + observability
-- Finding what to improve (Suggestions, asking the agent) → suggestions; see references/ask-hex.md
+- Finding what to improve (Suggestions, asking the agent) → suggestions; see workflows/improve-loop.md
