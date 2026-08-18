@@ -1,6 +1,6 @@
 # Hex Context Management
 
-**Makes Hex's AI agents (Threads, the Notebook Agent, the Modeling Agent) give correct answers — and lets you prove they do.**
+**Makes Hex's AI agents (Threads, the Notebook Agent, the Modeling Agent) give trusted answers — and lets you test if they keep giving them over time.**
 
 If Threads picks the wrong table, invents a metric, or answers "revenue" three different ways, this skill helps you fix it — you write the context that teaches Hex your data and your definitions, then measure whether it worked.
 
@@ -49,12 +49,12 @@ context-management/
 ├── SKILL.md              # start here — orients, then routes
 ├── workflows/            # bootstrap (0→1) and the improve loop
 ├── agents/
-│   ├── context-architect.md   # authors context; fixes wrong answers
-│   └── eval-engineer.md       # writes & runs evals; measures context
+│   ├── context-architect.md   # authors context; reviews suggestions and fixes missing context
+│   └── eval-engineer.md       # writes & runs evals; measures contex
 ├── references/           # github sync, evals + preview, deep-dive examples, docs
 └── hex-guides/           # a guide you add to Hex so it can draft data-grounded context
 ```
 
 ## Credit
 
-Distilled from Hex's *Data Leader's Playbook for AI Analytics* and published best-practice docs. Hex and the named features are products of Hex Technologies; this is an independent aid for using them.
+Distilled from Hex's *Data Leader's Playbook for AI Analytics* and published best-practice docs. Hex and the named features are products of Hex Technologies; this is an independent aid for using them. Authored by Rachel Herrera, Product Evangelist at Hex.
