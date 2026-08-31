@@ -1,0 +1,12 @@
+{
+  "name": "mode-migration",
+  "version": "1.0.0",
+  "description": "Migrate Mode (Mode Analytics / ThoughtSpot Mode) reports into Hex. This coding agent pulls the report via the Mode API and translates the Mode-specific layers (Liquid params, definitions, dataset refs, Python/R notebooks) into a migration brief; Hex's notebook agent builds a generative app on a natively-gated SQL data layer; then it's verified with a SQL-fidelity gate and a visual-QA loop.",
+  "author": {
+    "name": "awashington",
+    "url": "https://github.com/hex-inc"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "mode", "mode-analytics", "liquid", "migration", "dashboards", "analytics", "ai-agents"]
+}

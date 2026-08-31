@@ -6,6 +6,7 @@ This repo contains Agent Skills for working with Hex. Read the skill that matche
 |------|-------|
 | Hex context engineering, Threads rollout, workspace context/guides, warehouse descriptions, endorsements, semantic models, or diagnosing wrong agent answers | [`skills/context-management/SKILL.md`](skills/context-management/SKILL.md) |
 | Migrate Looker content (LookML models/explores, user-defined or LookML dashboards, Looks) into Hex — convert/port/rebuild "Looker → Hex" | [`skills/looker-migration/SKILL.md`](skills/looker-migration/SKILL.md) |
+| Migrate Mode content (Mode Analytics / ThoughtSpot Mode reports, queries, charts, Report Builder / HTML-Liquid layouts, Python/R notebooks) into Hex — convert/port/rebuild "Mode → Hex" | [`skills/mode-migration/SKILL.md`](skills/mode-migration/SKILL.md) |
 | Migrate Tableau content (.twb/.twbx, Tableau Cloud/Server views/workbooks) into Hex — convert/port/rebuild "Tableau → Hex" | [`skills/tableau-migration/SKILL.md`](skills/tableau-migration/SKILL.md) |
 
 Each skill routes to specialists in its `agents/` folder and supporting material in `references/`.
