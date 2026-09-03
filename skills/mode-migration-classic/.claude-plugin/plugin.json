@@ -1,0 +1,12 @@
+{
+  "name": "mode-migration-classic",
+  "version": "1.0.0",
+  "description": "Migrate Mode (Mode Analytics / ThoughtSpot Mode) reports into Hex as a classic app — native notebook cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) assembled in an app layout, maintainable by analysts with no code. This coding agent pulls the report via the Mode API and translates the Mode-specific layers (Liquid params, definitions, dataset refs, Python/R notebooks) into a migration brief; Hex's notebook agent builds the native cells on a natively-gated SQL data layer; then it's verified with a SQL-fidelity gate, a cell-spec diff, and a visual-QA loop. The `mode-migration` sibling delivers a generative app instead, for bespoke HTML/Liquid report pages where pixel fidelity outranks maintainability.",
+  "author": {
+    "name": "awashington",
+    "url": "https://github.com/hex-inc"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "mode", "mode-analytics", "liquid", "migration", "dashboards", "analytics", "ai-agents", "classic-app", "native-cells"]
+}
