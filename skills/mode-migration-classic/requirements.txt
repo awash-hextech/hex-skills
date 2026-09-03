@@ -1,0 +1,6 @@
+# mode_fetch.py uses only the Python standard library (urllib, base64, json).
+# The visual-QA screenshot scripts (mode_shots.py, hex_shots.py) need Playwright:
+playwright>=1.40
+
+# After installing, download the browser once:
+#   playwright install chromium
