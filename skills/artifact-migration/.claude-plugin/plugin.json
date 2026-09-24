@@ -1,0 +1,12 @@
+{
+  "name": "artifact-migration",
+  "version": "1.0.0",
+  "description": "Migrate Claude Artifacts (claude.ai HTML/React pages — dashboards, trackers, calculators, prototypes) into Hex. This coding agent reads the artifact's source, published files and artifact-database rows, then runs a data-grounding gate that maps every number onto a real warehouse column so mock data never ships; Hex's notebook agent builds a generative app on a natively-gated SQL data layer; then it's verified with a SQL-fidelity gate (including a mock-constant sweep) and a visual-QA loop.",
+  "author": {
+    "name": "awashington",
+    "url": "https://github.com/hex-inc"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "claude", "artifacts", "migration", "dashboards", "prototypes", "analytics", "ai-agents"]
+}

@@ -1,0 +1,17 @@
+# Secrets — never commit real credentials
+credentials/*.env
+
+# Local, machine-specific Claude Code settings (permission allowlists, etc.)
+.claude/settings.local.json
+
+# Local downloads + scratch.
+# NOTE: working/ also holds the Playwright screenshot profiles, which carry live
+# claude.ai and Hex sessions. Never commit them.
+artifact_exports/
+working/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/

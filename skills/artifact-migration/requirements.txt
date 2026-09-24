@@ -1,0 +1,8 @@
+# Reading artifacts needs no dependencies — the agent's Artifact / ArtifactData
+# tools are the fetch path, so there's no API script here.
+#
+# The visual-QA screenshot scripts (artifact_shots.py, hex_shots.py) need Playwright:
+playwright>=1.40
+
+# After installing, download the browser once:
+#   playwright install chromium
