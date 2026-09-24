@@ -28,6 +28,31 @@ It is a fork of the sibling **`tableau-migration`** skill, which is identical ex
 
 Rule of thumb: **dashboards the team wants to own and edit → this skill. Pixel-critical dashboards where fidelity outranks maintainability → the generative sibling.** Decide per dashboard, not per batch. The Tableau-side parsing, the brief, and the SQL gate are identical in both.
 
+## Install
+
+### Claude Code (plugin marketplace)
+
+```
+/plugin marketplace add hex-inc/hex-skills
+/plugin install tableau-migration-classic@hex-skills
+```
+
+Install `tableau-migration` alongside it if you also want the generative build — the two
+cross-reference each other for routing.
+
+### Any agent CLI (cross-tool, Agent Skills standard)
+
+```
+npx skills add hex-inc/hex-skills --skill tableau-migration-classic
+```
+
+### OpenAI Codex
+
+Clone the repo and ask Codex to follow `skills/tableau-migration-classic/SKILL.md` (or see
+[`AGENTS.md`](../../AGENTS.md) at the repo root).
+
+Then invoke it via your agent (e.g. a `/tableau-migration-classic` command), or just ask to "migrate my Tableau dashboards to Hex as a classic app" — the `description` frontmatter triggers it.
+
 ## First-time setup
 1. `cp credentials/tableau.env.example credentials/tableau.env` and fill in your Tableau **pod URL**, **site**, and **Personal Access Token**. (Gitignored — never commit it.)
 2. Install the [Hex CLI](https://hex.tech/product/cli) and authenticate.
