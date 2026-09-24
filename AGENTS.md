@@ -4,6 +4,7 @@ This repo contains Agent Skills for working with Hex. Read the skill that matche
 
 | Task | Skill |
 |------|-------|
+| Migrate a Claude Artifact (a claude.ai HTML/React page — dashboard, tracker, calculator, prototype) into Hex — convert/port/productionize "Claude artifact → Hex". Leads with a data-grounding gate, since an artifact's numbers are usually placeholders rather than warehouse data | [`skills/artifact-migration/SKILL.md`](skills/artifact-migration/SKILL.md) |
 | Hex context engineering, Threads rollout, workspace context/guides, warehouse descriptions, endorsements, semantic models, or diagnosing wrong agent answers | [`skills/context-management/SKILL.md`](skills/context-management/SKILL.md) |
 | Migrate Looker content (LookML models/explores, user-defined or LookML dashboards, Looks) into Hex — convert/port/rebuild "Looker → Hex" | [`skills/looker-migration/SKILL.md`](skills/looker-migration/SKILL.md) |
 | Migrate Mode content (Mode Analytics / ThoughtSpot Mode reports, queries, charts, Report Builder / HTML-Liquid layouts, Python/R notebooks) into Hex — convert/port/rebuild "Mode → Hex" | [`skills/mode-migration/SKILL.md`](skills/mode-migration/SKILL.md) |

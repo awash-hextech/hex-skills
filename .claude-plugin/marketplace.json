@@ -10,6 +10,12 @@
   },
   "plugins": [
     {
+      "name": "artifact-migration",
+      "source": "./skills/artifact-migration",
+      "description": "Migrate Claude Artifacts (claude.ai HTML/React pages — dashboards, trackers, calculators, prototypes) into Hex. Unlike the BI migrations the source has no warehouse behind it, so this skill leads with a data-grounding gate that maps every number onto a real warehouse column — mock data never ships — then lets Hex's notebook agent build a generative app on gated SQL cells, verified with a SQL-fidelity gate (including a mock-constant sweep) and a visual-QA loop.",
+      "version": "1.0.0"
+    },
+    {
       "name": "context-management",
       "source": "./skills/context-management",
       "description": "Build, manage, and improve the context that makes Hex's AI agents (Threads, Notebook Agent, Modeling Agent) accurate — endorsements, warehouse descriptions, workspace context, guides, and semantic models — then measure it with a dedicated eval engine that authors and runs eval suites, sources cases from real usage, and gates changes in a hex context preview. Publish via GitHub sync or the Hex CLI. Routes to the specific workflow instead of running full setup each time.",
