@@ -38,6 +38,12 @@
       "source": "./skills/tableau-migration",
       "description": "Migrate Tableau dashboards/workbooks into Hex: parse the .twb into a migration brief, let Hex's notebook agent build a generative app on gated SQL cells, and verify with a SQL-fidelity gate + a visual-QA loop.",
       "version": "1.0.0"
+    },
+    {
+      "name": "tableau-migration-classic",
+      "source": "./skills/tableau-migration-classic",
+      "description": "Migrate Tableau dashboards/workbooks into Hex as a classic app — native cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) in an app layout that analysts can maintain with no code. Same brief and SQL-fidelity gate as tableau-migration, plus a cell-spec diff over the exported chart specs; table calcs and ratios of aggregates are pre-computed as SQL columns. Pick this when the team wants a dashboard they can edit; pick tableau-migration when pixel fidelity outranks maintainability.",
+      "version": "1.0.0"
     }
   ]
 }

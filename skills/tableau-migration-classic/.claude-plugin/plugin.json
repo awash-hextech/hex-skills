@@ -1,0 +1,12 @@
+{
+  "name": "tableau-migration-classic",
+  "version": "1.0.0",
+  "description": "Migrate Tableau dashboards/workbooks into Hex as a classic app — native notebook cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) assembled in an app layout, maintainable by analysts with no code. This coding agent parses the .twb/.twbx and writes a migration brief + styling spec; Hex's notebook agent builds the native cells on a natively-gated SQL data layer; then it's verified with a SQL-fidelity gate, a cell-spec diff, and a visual-QA loop. Table calcs and ratios of aggregates are pre-computed as SQL columns, since a native chart can't express them. The `tableau-migration` sibling delivers a generative app instead, for dashboards where pixel fidelity outranks maintainability.",
+  "author": {
+    "name": "awashington",
+    "url": "https://github.com/hex-inc"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "tableau", "twb", "migration", "dashboards", "analytics", "ai-agents", "classic-app", "native-cells"]
+}
