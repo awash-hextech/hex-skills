@@ -49,7 +49,7 @@ For each query capture:
 | Ledger field | From the Mode report (source) | In the SQL (target) |
 |---|---|---|
 | **Base query SQL** | the query's `raw_query` text (verbatim) | the ported `SELECT` (verbatim if same-warehouse; translated if dialect changed) |
-| **Liquid params** | every `{% form %}` field + `{{ @param }}` use | the Hex input cell + bare `{{ param }}` refs (no quotes) |
+| **Liquid params** | every `{% form %}` field + `{{ @param }}` use | the Hex input cell (type incl. multiselect) + bare `{{ param }}` refs (no quotes; `\| array` for multiselects) + each `\| sqlsafe` use with its reason |
 | **Branches** | every `{% if %}`/`{% case %}` path | the Jinja branches (all of them) reproduced |
 | **Definitions** | each `{{ @definition }}` include | the CTE it was inlined as (or the upstream cell) |
 | **Datasets** | any cross-report dataset ref | the upstream cell that rebuilt it (+ its grain) |
@@ -86,9 +86,24 @@ divergences → gate passes. Any divergence → fix and re-run step 4's oracle.
 Run every cluster against this.
 
 - ☐ **Liquid param wiring.** Every `{% form %}` field → a Hex input; every `{{ @param }}`
-  → a **bare** `{{ param }}` (string params NOT quoted — quoted = `''value''` = zero rows,
-  silent). Defaults and options carried. Scope correct (population param in the shared
-  `WHERE`; display param on its cell). → [`gotchas.md`](gotchas.md).
+  → a **bare** `{{ param }}` (string params NOT quoted — a quoted bind placeholder = zero
+  rows, silent). Defaults and options carried. Scope correct (population param in the
+  shared `WHERE`; display param on its cell). Then, per
+  [`mode-semantics.md`](mode-semantics.md) §1a-ii:
+  - ☐ **No quoted refs left:** a search for `'\{\{[^}]*\}\}'` comes back empty; every
+    `LIKE '%…%'` is rewritten with `||` / `CONCAT`.
+  - ☐ **Multiselects use `IN ({{ x | array }})`** and are guarded against an empty
+    selection.
+  - ☐ **Apostrophe handling matches Mode's intent:** Mode escaping (`''`) dropped;
+    Mode stripping kept as SQL `REPLACE` on both sides. Proven with a probe value
+    containing an apostrophe (row count = Mode's).
+  - ☐ **Every `| sqlsafe` is an identifier from a fixed dropdown**, with its reason in the
+    ledger. Any other use fails the gate.
+  - ☐ **Empty-input guards match Mode:** a guard exists only where blank meant "no
+    filter" in Mode; numeric/date guards use `is not none`. Probe the empty case.
+  - ☐ **No `{{ }}` / `{% %}` in SQL comments** (outside `{# #}` / `{% raw %}`), and
+    comments describe the query, not the migration.
+  → [`gotchas.md`](gotchas.md).
 - ☐ **Branch coverage.** Every `{% if %}`/`{% case %}` path is reproduced (as Jinja or a
   SQL `CASE`), not just the default branch. A branch that changes grain/population is
   proven with a probe (§4). → [`mode-semantics.md`](mode-semantics.md) §1b.

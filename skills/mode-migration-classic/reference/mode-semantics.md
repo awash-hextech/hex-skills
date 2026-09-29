@@ -106,16 +106,71 @@ Translate to Hex:
 | `type: date` | date input; carry the default |
 | `type: text` / `number` | text / number input |
 | `type: select` (`options:`) | dropdown; carry `options` + default |
+| `type: select` with multiple selection, or SQL like `IN ('{{ @x \| join: "','" }}')` | **multiselect**; reference as `IN ({{ x \| array }})` — never bare (see 1a-ii) |
 | `type: checkbox` / boolean | toggle |
 | `{{ @param }}` in SQL | Hex Jinja `{{ param }}` (name it identically) |
 | `{% if @segment != 'All' %}…{% endif %}` | Hex Jinja `{% if segment != 'All' %}…{% endif %}` (Hex SQL cells support Jinja control flow) |
 
-⚠️ **The quoting trap is inverted from Mode.** Mode requires you to quote a string
-param yourself (`'{{ @segment }}'`). **Hex does the opposite — it auto-quotes string
-params, so you must DROP the quotes.** Writing `'{{ segment }}'` in a Hex SQL cell
-produces `''value''` and matches nothing (the query COMPLETEs but returns zero rows —
-silent). Reference string params **bare**: `WHERE segment = {{ segment }}`. See
-`gotchas.md`.
+⚠️ **The quoting trap is inverted from Mode.** Mode substitutes the param as text, so
+you quote it yourself (`'{{ @segment }}'`). **Hex binds the param as a query parameter —
+the warehouse receives the value separately, already typed — so you must DROP the
+quotes.** A quoted `'{{ segment }}'` puts the bind placeholder inside a string literal,
+so the warehouse compares against the wrong string (or errors): the query usually
+COMPLETEs with zero rows — silent. Reference string params **bare**:
+`WHERE segment = {{ segment }}`. See `gotchas.md`.
+
+#### 1a-ii. Porting rules for each parameter reference
+
+Apply every rule to every `{{ @param }}` use — `WHERE`, `SELECT`, `CASE`, and comments.
+
+1. **Multiselect → `| array`.** A bare `{{ x }}` holding a list does not bind correctly.
+   Build a Hex **multiselect** input and write `col IN ({{ x | array }})`. An empty
+   selection expands to `IN ()`, which is a syntax error on most warehouses, so every
+   `| array` needs a guard (rule 5).
+2. **Apostrophe handling — escaping and stripping port in opposite directions.** Read
+   what Mode's `| replace` actually did:
+   - **Escaped `'` → `''`** (to keep the quoted literal valid): **drop it.** Binding
+     handles quoting; keeping the doubling makes the value contain two apostrophes and
+     match nothing.
+   - **Stripped `'` → `''`** (matching logic, e.g. `Director's` should match
+     `Directors`): **keep it, in SQL** — `REPLACE({{ x }}, CHR(39), '')`, and confirm the
+     column side is stripped too. `REPLACE` can't wrap an `| array` expansion, so for a
+     multiselect clean the list in an upstream Python cell and reference the cleaned
+     variable.
+   - Any "apostrophe-insensitive" claim must be checked against the **final** SQL, then
+     proven: run the query with a value containing an apostrophe and compare row counts
+     with Mode.
+3. **Strip Mode's quotes — including inside `LIKE`.** Search the ported SQL for quoted
+   references (`'\{\{[^}]*\}\}'`, and the double-quoted form) and remove the quotes.
+   `LIKE '%{{ @x }}%'` can't just lose its quotes — rewrite it as
+   `LIKE '%' || {{ x }} || '%'` (or `CONCAT('%', {{ x }}, '%')` where `||` isn't
+   concatenation).
+4. **`| sqlsafe` only for identifiers from a fixed list.** `sqlsafe` inserts the raw string
+   with no binding, so it reopens SQL injection. Never apply it to a value the user
+   typed or picked freely. The one legitimate use is something that can't be bound — a
+   column name, sort direction, or table name — and only when it comes from a dropdown
+   with a **fixed option list**. Record each use and its reason in the translation ledger.
+5. **Empty inputs — keep Mode's behavior; don't invent a guard.** Add
+   `{% if x %}…{% endif %}` around a clause only when blank meant "no filter" in Mode (the
+   source had an `{% if %}`, an "All" option, or an empty default). Adding a guard Mode
+   didn't have turns a zero-row filter into an everything filter. Watch Jinja
+   truthiness: `0`, `""`, `[]`, and `None` are all false, so a number input set to `0`
+   would silently drop the filter — for numbers and dates use `{% if x is not none %}`.
+   An "All" sentinel needs its own check (`{% if x != 'All' %}`).
+6. **`CHR(39)` and other dialect functions — only when the warehouse changes.** Same
+   warehouse → the SQL is verbatim and whatever Mode ran still works. If the warehouse
+   changes, handle it in the "Dialect step" below (e.g. SQL Server and MySQL use
+   `CHAR(39)`).
+7. **Comments are Jinja too.** Hex renders Jinja across the whole SQL cell, and Jinja
+   doesn't know about SQL comments. A `{{ }}` or `{% %}` inside `--` or `/* */` is
+   evaluated, and leftover Mode syntax (`{{ @param }}`) is a hard syntax error. In
+   comments, name the parameter in words ("the `job_titles` input"), or use a Jinja
+   comment `{# … #}` (stripped before the query runs), or wrap the text in
+   `{% raw %}…{% endraw %}`.
+8. **Comments describe the query, not the migration.** Write what the SQL does
+   ("`job_titles` is bound; `REPLACE` makes the match apostrophe-insensitive"), not
+   what changed from Mode ("Only the Liquid changed…"). Nobody can check a
+   migration diff once the Mode report is retired.
 
 ⚠️ **Classify each parameter's scope before wiring it** (same rule as any Hex build):
 - **Data-population parameter** (rewrites the `WHERE` / changes totals — e.g. a date
