@@ -40,6 +40,12 @@
       "version": "1.0.0"
     },
     {
+      "name": "omni-migration",
+      "source": "./skills/omni-migration",
+      "description": "Migrate Omni Analytics dashboards into Hex as a classic app (native cells in an app layout) or a generative app, chosen per dashboard: compile each tile's semantic query using the Omni model and Omni's own generated SQL, let Hex's notebook agent build on gated SQL cells, and verify with a SQL-fidelity gate (result parity vs Omni), a cell-spec diff (classic), and a visual-QA loop.",
+      "version": "1.0.0"
+    },
+    {
       "name": "tableau-migration",
       "source": "./skills/tableau-migration",
       "description": "Migrate Tableau dashboards/workbooks into Hex: parse the .twb into a migration brief, let Hex's notebook agent build a generative app on gated SQL cells, and verify with a SQL-fidelity gate + a visual-QA loop.",
