@@ -1,0 +1,9 @@
+# omni_fetch.py uses only the Python standard library (urllib, json, base64).
+# Optional: decode Omni's Arrow result payloads for long-running tile queries.
+pyarrow>=14
+
+# The visual-QA screenshot scripts (omni_shots.py, hex_shots.py) need Playwright:
+playwright>=1.40
+
+# After installing, download the browser once:
+#   playwright install chromium

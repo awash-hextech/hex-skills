@@ -1,0 +1,12 @@
+{
+  "name": "omni-migration",
+  "version": "1.0.0",
+  "description": "Migrate Omni Analytics dashboards into Hex as either a classic app (native SQL, input, and EXPLORE/METRIC/pivot cells in an app layout) or a generative app, chosen per dashboard. This coding agent pulls each dashboard via the Omni API — tile queries, every model layer's YAML, and Omni's own generated SQL and result rows per tile — compiles the semantic queries into the SQL they mean, and writes a migration brief; Hex's notebook agent builds the chosen app form on gated SQL cells; then it's verified with a SQL-fidelity gate anchored on result parity against Omni, a cell-spec diff (classic), and a visual-QA loop.",
+  "author": {
+    "name": "awashington",
+    "url": "https://github.com/hex-inc"
+  },
+  "repository": "https://github.com/hex-inc/hex-skills",
+  "license": "MIT",
+  "keywords": ["hex", "omni", "omni-analytics", "semantic-layer", "migration", "dashboards", "analytics", "ai-agents", "classic-app", "generative-app"]
+}
