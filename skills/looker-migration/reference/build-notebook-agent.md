@@ -116,16 +116,23 @@ is a missed chart.
    vs. named ones). Data-population filters belong in the shared `WHERE`;
    chart-scoped `query.filters` attach to their cells. See
    [`lookml-semantics.md`](lookml-semantics.md) §7.
+   For Liquid-driven params, state **what each value does** (not the Liquid), the
+   branch you resolved per tile, and any templated filter that must stay inside its
+   CTE ([`liquid.md`](liquid.md)).
 5. **The derivations needed** — the shared base (finest-grain cluster) + every
    companion (running totals / other table calcs, ratio-of-measures, KPI scalars),
    each as **intent + the LookML construct it came from**. This is where you prevent
    the agent from missing a `dynamic_fields` table calc or a `type: number` ratio.
-   Reuse the status legend (✅/🔸/🐍/⚠️) from
-   [`lookml-semantics.md`](lookml-semantics.md).
+   For nested data, name the nested columns, which tiles need the child vs. parent
+   grain, and the casts ([`nested-data.md`](nested-data.md)). The agent sees the schema
+   but not Looker's symmetric-aggregate intent.
 6. **The charts** — one line per tile: title (exact), chart type (from
    `vis_config.type`), x / y + aggregation, color/pivot split, sort, number format
    (from the measure's `value_format_name`), and which derivation it reads. Name the
-   real `view.field`, not the humanized caption.
+   real `view.field`, not the humanized caption. Include vis-level math as display
+   settings, not derivations: `show_dropoff`, `stacking: percent`, percent-of-total
+   toggles and the like are computed by the chart, not the SQL. A tile's title isn't a
+   spec ("% of Total" may be a vis setting).
 7. **Layout** — the row-by-row order the dashboard should assemble into (from the
    contract's active `dashboard_layout` — see [`gotchas.md`](gotchas.md)).
 8. **Styling** — colors per member (hex codes from `vis_config.series_colors`) +
@@ -133,7 +140,9 @@ is a missed chart.
    defaults.
 9. **Gaps** — maps (`looker_map`), merged results, exotic table calcs, user-attribute
    RLS: name them as known gaps (🐍/⚠️) so the agent doesn't silently approximate
-   them.
+   them. Also list **source defects reproduced for parity** (sql-review "When
+   Looker's own number is wrong"): say the SQL intentionally matches Looker and must
+   not be "fixed" unless the customer chose the corrected version.
 
 Keep it tight — intent, not prose. A dashboard's worth of brief is a page or two.
 

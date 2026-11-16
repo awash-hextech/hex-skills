@@ -6,12 +6,16 @@ This repo contains Agent Skills for working with Hex. Read the skill that matche
 |------|-------|
 | Migrate a Claude Artifact (a claude.ai HTML/React page — dashboard, tracker, calculator, prototype) into Hex — convert/port/productionize "Claude artifact → Hex". Leads with a data-grounding gate, since an artifact's numbers are usually placeholders rather than warehouse data | [`skills/artifact-migration/SKILL.md`](skills/artifact-migration/SKILL.md) |
 | Hex context engineering, Threads rollout, workspace context/guides, warehouse descriptions, endorsements, semantic models, or diagnosing wrong agent answers | [`skills/context-management/SKILL.md`](skills/context-management/SKILL.md) |
+| Hex context engineering, Threads rollout, workspace context/guides, warehouse descriptions, endorsements, semantic models, or diagnosing wrong agent answers | [`skills/context-consultant/SKILL.md`](skills/context-consultant/SKILL.md) |
 | Migrate Looker content (LookML models/explores, user-defined or LookML dashboards, Looks) into Hex — convert/port/rebuild "Looker → Hex" | [`skills/looker-migration/SKILL.md`](skills/looker-migration/SKILL.md) |
 | Migrate Mode content (Mode Analytics / ThoughtSpot Mode reports, queries, charts, Report Builder / HTML-Liquid layouts, Python/R notebooks) into Hex — convert/port/rebuild "Mode → Hex" | [`skills/mode-migration/SKILL.md`](skills/mode-migration/SKILL.md) |
 | Migrate Mode content into Hex as a **classic app** — native cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) in an app layout that analysts can maintain, rather than a generative code app | [`skills/mode-migration-classic/SKILL.md`](skills/mode-migration-classic/SKILL.md) |
 | Migrate Omni Analytics content (dashboards, workbook tiles, topics, the Omni semantic model) into Hex — convert/port/rebuild "Omni → Hex", as a classic app or a generative app | [`skills/omni-migration/SKILL.md`](skills/omni-migration/SKILL.md) |
 | Migrate Tableau content (.twb/.twbx, Tableau Cloud/Server views/workbooks) into Hex — convert/port/rebuild "Tableau → Hex" | [`skills/tableau-migration/SKILL.md`](skills/tableau-migration/SKILL.md) |
 | Migrate Tableau content into Hex as a **classic app** — native cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) in an app layout that analysts can maintain, rather than a generative code app | [`skills/tableau-migration-classic/SKILL.md`](skills/tableau-migration-classic/SKILL.md) |
+
+Skills under [`snowflake-coco/`](snowflake-coco/) are written for Snowflake Cortex Code (CoCo) and
+assume its runtime. Use them only when running inside CoCo; otherwise use the skills above.
 
 Each skill routes to specialists in its `agents/` folder and supporting material in `references/`.
 Read referenced files as needed. Before giving step-by-step Hex UI instructions, fetch the relevant

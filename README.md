@@ -10,12 +10,21 @@ standard.
 |-------|-------------|
 | [artifact-migration](skills/artifact-migration/) | Migrate Claude Artifacts (claude.ai HTML/React pages — dashboards, trackers, calculators, prototypes) into Hex. Unlike the BI migrations the source has no warehouse behind it, so the skill leads with a **data-grounding gate** that maps every number onto a real warehouse column — mock data never ships — then lets Hex's notebook agent build a generative app on gated SQL cells, verified with a SQL-fidelity gate (including a mock-constant sweep) + a visual-QA loop. |
 | [context-management](skills/context-management/) | Build and improve the context that makes Hex's AI agents accurate (endorsements, descriptions, workspace context, guides, semantic models), then measure it with a dedicated eval engine — authoring and running eval suites, sourcing cases from real usage, and gating changes in a preview — managed as code and synced to Hex. |
+| [context-consultant](skills/context-consultant/) | Build and improve the context that makes Hex's AI agents accurate (endorsements, descriptions, workspace context, guides, semantic models), then measure it with a dedicated eval engine — authoring and running eval suites, sourcing cases from real usage, and gating changes in a preview — managed as code and synced to Hex. |
 | [looker-migration](skills/looker-migration/) | Migrate Looker dashboards/Looks into Hex. Translates LookML + Looker's generated SQL, lets Hex's notebook agent build a generative app on gated SQL cells, and verifies with a SQL-fidelity gate (numeric parity vs Looker) + a visual-QA loop. |
 | [mode-migration](skills/mode-migration/) | Migrate Mode (Mode Analytics / ThoughtSpot Mode) reports into Hex. Pulls the report via the Mode API, translates the Mode-specific layers (Liquid params, definitions, dataset refs, Python/R notebooks) into a migration brief, lets Hex's notebook agent build a **generative app** on gated SQL cells, and verifies with a SQL-fidelity gate + a visual-QA loop. |
 | [mode-migration-classic](skills/mode-migration-classic/) | The same Mode migration delivered as a **classic app** — native cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) in an app layout that analysts can maintain with no code. Adds a cell-spec diff over the exported chart specs. Pick it over `mode-migration` for Report Builder reports; pick `mode-migration` for bespoke HTML/Liquid report pages where pixel fidelity outranks maintainability. |
 | [omni-migration](skills/omni-migration/) | Migrate Omni Analytics dashboards into Hex as either a **classic app** (native cells in an app layout) or a **generative app**, chosen per dashboard. Omni tiles are semantic queries with no SQL, so the skill compiles them against every model layer and anchors on Omni's own generated SQL and result rows; Hex's notebook agent builds on gated SQL cells, verified with a SQL-fidelity gate (result parity vs Omni), a cell-spec diff (classic), and a visual-QA loop. |
 | [tableau-migration](skills/tableau-migration/) | Migrate Tableau dashboards/workbooks into Hex. Parses the `.twb` into a migration brief, lets Hex's notebook agent build a generative app on gated SQL cells, and verifies with a SQL-fidelity gate + a visual-QA loop. |
 | [tableau-migration-classic](skills/tableau-migration-classic/) | The same Tableau migration delivered as a **classic app** — native cells (SQL, input parameters, EXPLORE/METRIC/pivot charts) in an app layout that analysts can maintain with no code. Adds a cell-spec diff over the exported chart specs, and pre-computes table calcs + ratios of aggregates as SQL columns since a native chart can't express them. Pick it over `tableau-migration` when the team wants a dashboard they can edit; pick `tableau-migration` when pixel fidelity outranks maintainability. |
+
+## Snowflake Cortex Code (CoCo) skills
+
+[`snowflake-coco/`](snowflake-coco/) holds a Hex skill bundle built for Snowflake Cortex Code. It
+routes CoCo requests to Hex sub-skills for setup, projects and apps, notebook authoring, business
+analytics, context engineering, Cortex AI functions, and Tableau/Looker migration. It relies on
+CoCo's runtime, so it is installed separately from the skills above. See the
+[CoCo README](snowflake-coco/README.md) for install steps.
 
 ## Install
 
@@ -25,7 +34,7 @@ Install one skill at a time from the shared marketplace:
 
 ```
 /plugin marketplace add hex-inc/hex-skills
-/plugin install context-management@hex-skills
+/plugin install context-consultant@hex-skills
 ```
 
 See each skill's README for usage examples.
@@ -69,12 +78,15 @@ hex-skills/
 │       ├── agents/                   # optional specialist agents
 │       ├── references/               # optional supporting material
 │       └── hex-guides/               # optional Hex product install artifacts
+├── snowflake-coco/
+│   ├── README.md                     # install + usage for the CoCo bundle
+│   └── hex/                          # CoCo skill: SKILL.md router + sub-skills + references/
 └── README.md
 ```
 
 ## Adding a new skill
 
-Use [`skills/context-management/`](skills/context-management/) as the reference
+Use [`skills/context-consultant/`](skills/context-consultant/) as the reference
 implementation. Each skill is a self-contained folder under `skills/`.
 
 ### 1. Create the skill folder
@@ -94,7 +106,7 @@ skills/<skill-name>/
 `references/` or `agents/` and link to those files from `SKILL.md`.
 
 **`README.md`** should cover what the skill does, what's inside, and how to install/use it for
-this skill specifically (see the context-management README for an example).
+this skill specifically (see the context-consultant README for an example).
 
 ### 2. Register the skill in the repo
 
@@ -117,7 +129,7 @@ Update these three files so agents and install tools can discover the new skill:
 ### 3. Add the plugin manifest
 
 Create `skills/<skill-name>/.claude-plugin/plugin.json`. Copy from
-[`skills/context-management/.claude-plugin/plugin.json`](skills/context-management/.claude-plugin/plugin.json)
+[`skills/context-consultant/.claude-plugin/plugin.json`](skills/context-consultant/.claude-plugin/plugin.json)
 and update `name`, `description`, and `keywords`. Keep `repository` pointing at this repo.
 
 ### 4. Open a PR
